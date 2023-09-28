@@ -1,20 +1,22 @@
 volumes:
   postgres-data:
     external: true
+  pg-admin:
+    external: true
 services:
   postgres:
     image: postgres:14.5-bullseye
     volumes:
-        - postgres-data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
     environment:
-        POSTGRES_PASSWORD: cappuccino
-        POSTGRES_USER: cappuccino_coders
-        POSTGRES_DB: get_2_gether_db
+      POSTGRES_PASSWORD: cappuccino
+      POSTGRES_USER: cappuccino_coders
+      POSTGRES_DB: get_2_gether_db
     ports:
-        - 15432:5432
+      - 15432:5432
   fastapi:
     environment:
-      DATABASE_URL: postgresql://cappuccino_coders:cappuccino@postgres-1/get_2_gether_db
+      DATABASE_URL: postgresql://cappuccino_coders:cappuccino@postgres/get_2_gether_db
       CORS_HOST: http://localhost:3000
     build:
       context: api
@@ -23,6 +25,16 @@ services:
       - 8000:8000
     volumes:
       - ./api:/app
+  pg-admin:
+    image: dpage/pgadmin4
+    volumes:
+      - pg-admin:/var/lib/pgadmin
+    ports:
+      - 8082:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: cappuccinocoders@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: cappuccino12!@
+      PGADMIN_DISABLE_POSTFIX: 1
 
   ghi:
     image: node:lts-bullseye
