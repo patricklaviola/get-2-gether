@@ -16,6 +16,8 @@ services:
       - 15432:5432
   fastapi:
     environment:
+      SIGNING_KEY: 8c6f5010b01818593e6de54c11a6d28bd2456b6ad111052c711f2f6c1e6cd08d
+      WAIT_HOST: postgres:5432
       DATABASE_URL: postgresql://cappuccino_coders:cappuccino@postgres/get_2_gether_db
       CORS_HOST: http://localhost:3000
     build:
