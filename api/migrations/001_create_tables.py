@@ -4,8 +4,8 @@ steps = [
         """
         CREATE TABLE users (
             id SERIAL PRIMARY KEY NOT NULL,
-            full_name VARCHAR(250) NOT NULL,
-            email VARCHAR(250) NOT NULL,
+            user_name VARCHAR(250) NOT NULL,
+            email VARCHAR(250) NOT NULL UNIQUE,
             hashed_password VARCHAR(250) NOT NULL
         );
         """,
@@ -19,8 +19,8 @@ steps = [
         """
         CREATE TABLE groups (
             id SERIAL PRIMARY KEY NOT NULL,
-            name VARCHAR(250) NOT NULL,
-            user_id INT NOT NULL REFERENCES users(id)
+            group_name VARCHAR(250) NOT NULL,
+            creator_id INT NOT NULL REFERENCES users(id)
         );
         """,
         # "Down" SQL statement
@@ -52,7 +52,7 @@ steps = [
             image_url VARCHAR(250),
             description TEXT NOT NULL,
             group_id INT NOT NULL REFERENCES groups(id),
-            user_id INT NOT NULL REFERENCES users(id)
+            creator_id INT NOT NULL REFERENCES users(id)
         );
         """,
         # "Down" SQL statement
