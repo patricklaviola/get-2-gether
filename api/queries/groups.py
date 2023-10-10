@@ -4,9 +4,17 @@ from queries.pool import pool
 class Error(BaseModel):
     message: str
 
+
 class GroupIn(BaseModel):
     name: str
     user_id: int
+
+
+class GroupOut(BaseModel):
+    id: int
+    name: str
+    user_id: int
+
 
 class GroupOutMembers(BaseModel):
     id: int
@@ -20,10 +28,7 @@ class GroupMemberIn(BaseModel):
 class GroupMemberOut(BaseModel):
     group_members: list
 
-class GroupOut(BaseModel):
-    id: int
-    name: str
-    user_id: int
+
 
 class GroupRepository:
     def record_to_group_out(self, record, record_members) -> GroupOutMembers:
@@ -88,6 +93,22 @@ class GroupRepository:
                     if record is None:
                         return None
                     return self.record_to_group_out(record, record_members)
+        except Exception as e:
+            print(e)
+            return False
+
+    def delete(self, group_id: int) -> bool:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        DELETE FROM groups
+                        WHERE id = %s
+                        """,
+                        [group_id]
+                    )
+                    return True
         except Exception as e:
             print(e)
             return False

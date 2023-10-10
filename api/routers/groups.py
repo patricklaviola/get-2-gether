@@ -1,7 +1,6 @@
 from fastapi import Depends, APIRouter
 from queries.groups import GroupRepository, GroupOut, GroupIn, GroupOutMembers
 
-
 router = APIRouter()
 
 
@@ -19,3 +18,11 @@ def get_group(
     repo: GroupRepository = Depends(),
 ) -> GroupOutMembers:
     return repo.get(group_id)
+
+
+@router.delete("/groups/{group_id}", response_model=bool)
+def delete_group(
+    group_id: int,
+    repo: GroupRepository = Depends(),
+) -> bool:
+    return repo.delete(group_id)
