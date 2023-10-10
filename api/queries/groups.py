@@ -1,5 +1,7 @@
 from pydantic import BaseModel
 from queries.pool import pool
+from typing import List, Union
+
 
 class Error(BaseModel):
     message: str
@@ -21,13 +23,14 @@ class GroupOutMembers(BaseModel):
     name: str
     group_members: list
 
+
 class GroupMemberIn(BaseModel):
     user_id: int
     group_id: int
 
+
 class GroupMemberOut(BaseModel):
     group_members: list
-
 
 
 class GroupRepository:
@@ -112,3 +115,27 @@ class GroupRepository:
         except Exception as e:
             print(e)
             return False
+
+    def list_groups(self) -> Union[Error, List[GroupOut]]:
+        try:
+            with pool.connection() as conn:    
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        SELECT id, name, user_id
+                        FROM groups
+                        ORDER BY id;
+                        """
+                    )
+                    result = []
+                    for record in db: 
+                        group = GroupOut(
+                            id=record[0],
+                            name=record[1],
+                            user_id=record[2]
+                        )
+                        result.append(group)
+                    return result
+        except Exception as e:
+            print(e)
+            return {"message": "Could not get all groups"}

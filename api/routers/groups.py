@@ -1,5 +1,7 @@
-from fastapi import Depends, APIRouter
-from queries.groups import GroupRepository, GroupOut, GroupIn, GroupOutMembers
+from queries.groups import GroupRepository, GroupOut, GroupIn, GroupOutMembers, Error
+from fastapi import APIRouter, Depends, Response
+from authenticator import authenticator
+from typing import List, Union
 
 router = APIRouter()
 
@@ -26,3 +28,10 @@ def delete_group(
     repo: GroupRepository = Depends(),
 ) -> bool:
     return repo.delete(group_id)
+
+
+@router.get("/groups", response_model=Union[Error, List[GroupOut]])
+def get_all_groups(
+    repo: GroupRepository = Depends(),
+):
+    return repo.list_groups()
