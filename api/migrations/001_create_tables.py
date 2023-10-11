@@ -50,6 +50,7 @@ steps = [
             title VARCHAR(250) NOT NULL,
             location VARCHAR(250) NOT NULL,
             image_url VARCHAR(250),
+            event_time_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
             description TEXT NOT NULL,
             group_id INT NOT NULL REFERENCES groups(id),
             creator_id INT NOT NULL REFERENCES users(id)
