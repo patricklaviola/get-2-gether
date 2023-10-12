@@ -1,5 +1,4 @@
-<!-- Nadine: User, Chat, Friends -->
-<!-- USER -->
+<!----------- ACCOUNT ----------->
 
 ### Create Account (Sign Up)
 
@@ -61,7 +60,7 @@
   true
   ```
 
-<!-- CHAT -->
+<!----------- CHAT ----------->
 
 ### Create a message
 
@@ -120,11 +119,12 @@
   }
   ```
 
-<!-- Veronica - Groups -->
+<!----------- GROUPS ----------->
+<!-- Veronica -->
 
 ### CREATE A GROUP
 
-- Endpoint path: users/{user_id}/groups
+- Endpoint path: /groups
 - Endpoint method: POST
 
 - Headers:
@@ -148,16 +148,39 @@
       }
   ```
 
-### GET LIST OF GROUPS
+### GET LIST OF ALL GROUPS
 
-- Endpoint path: users/{user_id}/groups
+- Endpoint path: /groups
 - Endpoint method: GET
 
 - Headers:
 
   - Authorization: Bearer token
 
-- Response: List of groups
+- Response: List of all groups
+
+- Response shape (JSON):
+  ```json
+   {
+       “Groups”: [
+       {
+           “id”: int,
+           “group_name”: string,
+       }
+       ]
+   }
+  ```
+
+### GET LIST OF GROUPS BY USER
+
+- Endpoint path: /user/{user_id}/groups
+- Endpoint method: GET
+
+- Headers:
+
+  - Authorization: Bearer token
+
+- Response: List of groups by user
 
 - Response shape (JSON):
   ```json
@@ -173,7 +196,7 @@
 
 ### VIEW GROUP DETAILS
 
-- Endpoint path: users/{user_id}/groups/{group_id}
+- Endpoint path: /groups/{group_id}    
 - Endpoint method: GET
 
 - Headers:
@@ -187,19 +210,57 @@
   {
       “id”: int,
       “group_name”: string,
-      “group_members”: [
-          {
-              "user_id": "int",
-              "user_name": "string",
-          }
+  }
+  ```
+
+### DELETE GROUP
+
+- Endpoint path: /groups/{group_id}
+- Endpoint method: DELETE
+
+- Headers:
+
+  - Authorization: Bearer token
+
+- Response: Successfully deleted member from group
+
+- Response shape (JSON):
+  ```json
+      {
+          “Message”: “Successfully deleted group”
+      }
+  ```
+
+<!----------- GROUP MEMBERS ----------->
+
+### GET LIST OF GROUP MEMBERS
+
+- Endpoint path: /groups/{group_id}/group_members    
+- Endpoint method: GET
+
+- Headers:
+
+  - Authorization: Bearer token
+
+- Response: Group members
+
+- Response shape (JSON):
+  ```json
+  {
+      "member_id": int,
+      "group_id": int,
+      "user" : [
+        "id": int,
+        "user_name": int,
+        "email": string,
       ]
   }
   ```
 
 ### ADD MEMBER TO GROUP
 
-- Endpoint path: /groups/{group_id}/
-- Endpoint method: PUT
+- Endpoint path: /group_members
+- Endpoint method: POST
 
 - Headers:
 
@@ -208,7 +269,8 @@
 - Request shape (JSON):
   ```json
   {
-       “group_members”: int,
+       "group_id": int,
+       "user_id": int
   }
   ```
 - Response: Successfully added member to group
@@ -229,7 +291,7 @@
 
 ### DELETE MEMBER FROM GROUP
 
-- Endpoint path: /groups/{group_id}/{user_id}
+- Endpoint path: /group_members/{member_id}
 - Endpoint method: DELETE
 
 - Headers:
@@ -245,7 +307,8 @@
       }
   ```
 
-<!-- ELIZA – EVENTS -->
+<!----------- EVENTS ----------->
+<!-- ELIZA -->
 
 ### Get List of Events for a Group
 
@@ -326,17 +389,7 @@
     "event_time_date": "YYYY-MM-DDTHH:MM:SS",
     "description": string,
     "group_id": string,
-    "creator_id": int,
-    "attendees": [
-      {
-        "user_id": "int",
-        "user_name": "string"
-      },
-      {
-        "user_id": "int",
-        "user_name": "string"
-      }
-    ]
+    "creator_id": int
   }
   ```
 
@@ -412,7 +465,30 @@
   }
   ```
 
-<!-- Event Attendance -->
+<!----------- EVENT ATTENDANCE ----------->
+
+### Get List of Attendees for an Event
+
+- Endpoint path: /groups/{group_id}/events/{event_id}/status
+- Endpoint method: GET
+
+- Headers:
+
+  - Authorization: Bearer token
+
+- Response: Returned JSON that has a list of event attendents 
+
+- Response shape (JSON):
+  ```json
+  [
+    {
+      "user_id": "int",
+      "group_id": "int",
+      "event_id": "int",
+      "status": "string"
+    }, ...
+  ]
+  ```
 
 ### Create an Attendance
 
@@ -445,7 +521,7 @@
 ### Update an Event Attendance
 
 - Endpoint path: /groups/{group_id}/events/{event_id}/status
-- Endpoint method: PUT/PATCH
+- Endpoint method: PUT
 
 - Headers:
 

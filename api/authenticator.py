@@ -26,17 +26,14 @@ class ExampleAuthenticator(Authenticator):  # Defines a new class 'ExampleAuthen
     def get_hashed_password(self, account: AccountOutWithPassword):
         # This method returns the hashed password of a given account.
         # Return the encrypted password value from your account object
-        print("DICT", account)  # Debug print to see the contents of 'account'.
         return account.__getitem__('hashed_password')  # Gets the 'hashed_password' attribute from the 'account' and returns it.
 
     def get_account_data_for_cookie(self, account: AccountOutWithPassword):
         # This method prepares and returns data to be stored in a cookie.
         # Return the username and the data for the cookie.
         # You must return TWO values from this method.
-        print("ACCOUNT", account)  # Debug print to see the contents of 'account'.
-        d = account['full_name']  # Gets the 'full_name' attribute from the 'account' and assigns it to 'd'.
-        print(d)  # Debug print to see the value of 'd'.
-        return d, AccountOutWithPassword(**account)  # Returns two values: 'd' (full_name of the account) and an 'AccountOutWithPassword' object created from the account's dictionary representation.
+        d = account['user_name']  # Gets the 'user_name' attribute from the 'account' and assigns it to 'd'.
+        return d, AccountOutWithPassword(**account)  # Returns two values: 'd' (user_name of the account) and an 'AccountOutWithPassword' object created from the account's dictionary representation.
 
 
 # Instantiates 'ExampleAuthenticator' with the 'SIGNING_KEY' from environment variables.
