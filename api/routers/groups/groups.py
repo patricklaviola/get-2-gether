@@ -1,5 +1,6 @@
-from queries.groups import GroupRepository, GroupOut, GroupIn, Error
+from api.queries.groups.groups import GroupRepository, GroupOut, GroupIn, Error
 from fastapi import APIRouter, Depends
+
 # from authenticator import authenticator
 from typing import List, Union
 
@@ -7,10 +8,7 @@ router = APIRouter()
 
 
 @router.post("/groups")
-def create_group(
-    group: GroupIn,
-    repo: GroupRepository = Depends()
-):
+def create_group(group: GroupIn, repo: GroupRepository = Depends()):
     return repo.create(group)
 
 
@@ -37,7 +35,8 @@ def get_all_groups(
     return repo.list_groups()
 
 
-@router.get("/user/{user_id}/groups",
-            response_model=Union[Error, List[GroupOut]])
+@router.get(
+    "/user/{user_id}/groups", response_model=Union[Error, List[GroupOut]]
+)
 def list_groups_by_user():
     pass

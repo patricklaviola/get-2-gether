@@ -30,10 +30,7 @@ class GroupRepository:
                         (%s, %s)
                     RETURNING id;
                     """,
-                    [
-                        group.group_name,
-                        group.creator_id
-                    ]
+                    [group.group_name, group.creator_id],
                 )
                 id = result.fetchone()[0]
                 old_data = group.dict()
@@ -49,7 +46,7 @@ class GroupRepository:
                         FROM groups
                         WHERE groups.id = %s
                         """,
-                        [group_id]
+                        [group_id],
                     )
                     record = result_group.fetchone()
                     if record is None:
@@ -57,7 +54,7 @@ class GroupRepository:
                     return GroupOut(
                         id=record[0],
                         group_name=record[1],
-                        creator_id=record[2]
+                        creator_id=record[2],
                     )
         except Exception as e:
             print(e)
@@ -72,7 +69,7 @@ class GroupRepository:
                         DELETE FROM groups
                         WHERE id = %s
                         """,
-                        [group_id]
+                        [group_id],
                     )
                     return True
         except Exception as e:
@@ -95,7 +92,7 @@ class GroupRepository:
                         group = GroupOut(
                             id=record[0],
                             group_name=record[1],
-                            creator_id=record[2]
+                            creator_id=record[2],
                         )
                         result.append(group)
                     return result
