@@ -1,5 +1,6 @@
-from api.routers.groups import groups, group_members, messages
-from api.routers.events import events, event_attendees
+from routers.groups import groups
+
+# from api.routers.events import events, event_attendees
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import os
@@ -11,10 +12,10 @@ app = FastAPI()
 app.include_router(accounts.router)
 app.include_router(authenticator.router)
 app.include_router(groups.router)
-app.include_routers(events.router)
-app.include_router(event_attendees.router)
-app.include_router(group_members.router)
-app.include_router(messages.router)
+# app.include_routers(events.router)
+# app.include_router(event_attendees.router)
+# app.include_router(group_members.router)
+# app.include_router(messages.router)
 
 app.add_middleware(
     CORSMiddleware,

@@ -9,7 +9,7 @@ class Error(BaseModel):
 
 class GroupIn(BaseModel):
     group_name: str
-    creator_id: int
+    # creator_id: int
 
 
 class GroupOut(BaseModel):
@@ -19,7 +19,7 @@ class GroupOut(BaseModel):
 
 
 class GroupRepository:
-    def create(self, group: GroupIn) -> GroupOut:
+    def create(self, group: GroupIn, creator_id: int) -> GroupOut:
         with pool.connection() as conn:
             with conn.cursor() as db:
                 result = db.execute(
@@ -30,13 +30,15 @@ class GroupRepository:
                         (%s, %s)
                     RETURNING id;
                     """,
-                    [group.group_name, group.creator_id],
+                    [group.group_name, creator_id],
                 )
                 id = result.fetchone()[0]
-                old_data = group.dict()
-                return GroupOut(id=id, **old_data)
+                # old_data = group.dict()
+                return GroupOut(
+                    id=id, group_name=group.group_name, creator_id=creator_id
+                )
 
-    def get(self, group_id: int) -> GroupOut:
+    def get(self, group_id: int) -> Union[Error, GroupOut]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -64,6 +66,7 @@ class GroupRepository:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
+                    print("trying to delete")
                     db.execute(
                         """
                         DELETE FROM groups
