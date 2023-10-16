@@ -196,7 +196,7 @@
 
 ### VIEW GROUP DETAILS
 
-- Endpoint path: /groups/{group_id}    
+- Endpoint path: /groups/{group_id}
 - Endpoint method: GET
 
 - Headers:
@@ -233,31 +233,7 @@
 
 <!----------- GROUP MEMBERS ----------->
 
-### GET LIST OF GROUP MEMBERS
-
-- Endpoint path: /groups/{group_id}/group_members    
-- Endpoint method: GET
-
-- Headers:
-
-  - Authorization: Bearer token
-
-- Response: Group members
-
-- Response shape (JSON):
-  ```json
-  {
-      "member_id": int,
-      "group_id": int,
-      "user" : [
-        "id": int,
-        "user_name": int,
-        "email": string,
-      ]
-  }
-  ```
-
-### ADD MEMBER TO GROUP
+### CREATE A GROUP MEMBER
 
 - Endpoint path: /group_members
 - Endpoint method: POST
@@ -269,8 +245,8 @@
 - Request shape (JSON):
   ```json
   {
-       "group_id": int,
-       "user_id": int
+    "group_id": int,
+    "user_id": int
   }
   ```
 - Response: Successfully added member to group
@@ -278,120 +254,119 @@
 - Response shape (JSON):
   ```json
   {
-    “id”: int,
-  	“group_name”: string,
-  	“group_members”: [
-          {
-              "user_id": "int",
-              "user_name": "string",
-          }
-      ]
+    "id": int,
+    "group_id": int,
+    "user_id": int
+  }
+  ```
+
+### GET A GROUP MEMBER
+
+- Endpoint path: /group_members/{id}
+- Endpoint method: GET
+
+- Headers:
+
+  - Authorization: Bearer token
+
+- Request shape (JSON):
+  ```json
+  {
+    "id": int
+  }
+  ```
+- Response: Successfully returns a group member
+
+- Response shape (JSON):
+  ```json
+  {
+    "id": int,
+    "group_name": str,
+    "user_name": str,
+    "email": str,
+    "user_id": int
+  }
+  ```
+
+### GET LIST OF ALL GROUP MEMBERS
+
+- Endpoint path: /group_members
+- Endpoint method: GET
+
+- Headers:
+
+  - Authorization: Bearer token
+
+- Response: Returns a list of all group members
+
+- Response shape (JSON):
+  ```json
+  {
+    "id": int,
+    "group_name": str,
+    "user_name": str,
+    "email": str,
+    "user_id": int
+  }
+  ```
+
+### GET LIST OF GROUP MEMBERS FOR SPECIFIC GROUP
+
+- Endpoint path: /groups/{group_id}/group_members
+- Endpoint method: GET
+
+- Headers:
+
+  - Authorization: Bearer token
+
+- Request shape (JSON):
+
+  ```json
+  {
+    "group_id": int
+  }
+  ```
+
+- Response: Returns a list of all group members in a specific group
+
+- Response shape (JSON):
+  ```json
+  {
+    "id": int,
+    "group_name": str,
+    "user_name": str,
+    "email": str,
+    "user_id": int
   }
   ```
 
 ### DELETE MEMBER FROM GROUP
 
-- Endpoint path: /group_members/{member_id}
+- Endpoint path: /group_members/{id}
 - Endpoint method: DELETE
 
 - Headers:
 
   - Authorization: Bearer token
 
+- Request shape (JSON):
+
+  ```json
+  {
+    "id": int
+  }
+  ```
+
 - Response: Successfully deleted member from group
 
 - Response shape (JSON):
   ```json
-      {
-          “Message”: “Successfully deleted friend from group”
-      }
+  {
+    “Message”: “Successfully deleted friend from group”
+  }
   ```
 
 <!----------- EVENTS ----------->
-<!-- ELIZA -->
-
-### Get List of Events for a Group
-
-- Endpoint path: /groups/{group_id}/events
-- Endpoint method: GET
-
-- Headers:
-
-  - Authorization: Bearer token
-
-- Response: List of events associated with a specific group
-
-- Response shape (JSON):
-  ```json
-  {
-      "events": [
-          {
-            "id": int,
-            "title" : string,
-            "location" : string,
-            "image_url": url string,
-            "event_time_date": "YYYY-MM-DDTHH:MM:SS",
-            "description": string,
-            "group_id": string,
-            "creator_id": int
-          },
-      ]
-  }
-  ```
-
-### Get List of Events for a Specific User
-
-- Endpoint path: /users/{user_id}/events
-- Endpoint method: GET
-
-- Headers:
-
-  - Authorization: Bearer token
-
-- Response: List of events associated with a specific User
-
-- Response shape (JSON):
-  ```json
-  {
-      "events": [
-          {
-            "id": int,
-            "title" : string,
-            "location" : string,
-            "image_url": url string,
-            "event_time_date": "YYYY-MM-DDTHH:MM:SS",
-            "description": string,
-            "group_id": string,
-            "creator_id": int
-          },
-      ]
-  }
-  ```
-
-### Get Detail of Event
-
-- Endpoint path: /groups/{group_id}/events/{event_id}
-- Endpoint method: GET
-
-- Headers:
-
-  - Authorization: Bearer token
-
-- Response: Details of selected event
-
-- Response shape (JSON):
-  ```json
-  {
-    "id": int,
-    "title" : string,
-    "location" : string,
-    "image_url": url string,
-    "event_time_date": "YYYY-MM-DDTHH:MM:SS",
-    "description": string,
-    "group_id": string,
-    "creator_id": int
-  }
-  ```
 
 ### Create an Event
 
@@ -407,8 +382,9 @@
   {
     "title": "string",
     "location": "string",
-    "event_time_date": "YYYY-MM-DDTHH:MM:SS",
-    "image_url": "string"
+    "image_url": "string",
+    "event_time_date": "2023-10-16T18:36:32.681Z",
+    "description": "string"
   }
   ```
 - Response: JSON Message indicating successfull event creation
@@ -416,31 +392,13 @@
 - Response shape (JSON):
   ```json
   {
-    "message": "Event created successfully"
-  }
-  ```
-
-### Delete an Event
-
-- Endpoint path: /groups/{group_id}/events/{event_id}
-- Endpoint method: DELETE
-
-- Headers:
-
-  - Authorization: Bearer token
-
-- Response: Confirmation that selected event has been deleted
-
-- Response shape (JSON):
-  ```json
-  {
-    "message": "Event deleted successfully"
+    "string"
   }
   ```
 
 ### Update an Event
 
-- Endpoint path: /groups/{group_id}/events/{event_id}
+- Endpoint path: /events/{event_id}
 - Endpoint method: PUT
 
 - Headers:
@@ -452,8 +410,9 @@
   {
     "title": "string",
     "location": "string",
-    "event_time_date": "YYYY-MM-DDTHH:MM:SS",
-    "image_url": "string"
+    "image_url": "string",
+    "event_time_date": "2023-10-16T18:38:05.877Z",
+    "description": "string"
   }
   ```
 - Response: Updated event detail with changed information reflected
@@ -461,38 +420,168 @@
 - Response shape (JSON):
   ```json
   {
-    "message": "Event successfully updated"
+    "id": "int",
+    "title": "string",
+    "location": "string",
+    "image_url": "string",
+    "event_time_date": "2023-10-16T18:38:05.878Z",
+    "description": "string",
+    "group_id": "int",
+    "creator_id": "int"
   }
   ```
 
-<!----------- EVENT ATTENDANCE ----------->
+### Delete an Event
 
-### Get List of Attendees for an Event
+- Endpoint path: /events/{event_id}
+- Endpoint method: DELETE
 
-- Endpoint path: /groups/{group_id}/events/{event_id}/status
+- Headers:
+
+  - Authorization: Bearer token
+
+- Response: Confirmation that selected event has been deleted
+
+- Response shape (JSON):
+  ```json
+  true
+  ```
+
+### Get Detail of Event
+
+- Endpoint path: /events/{event_id}
 - Endpoint method: GET
 
 - Headers:
 
   - Authorization: Bearer token
 
-- Response: Returned JSON that has a list of event attendents 
+- Response: Details of selected event
+
+- Response shape (JSON):
+  ```json
+  {
+    "id": "int",
+    "title": "string",
+    "location": "string",
+    "image_url": "string",
+    "event_time_date": "2023-10-16T18:39:45.228Z",
+    "description": "string",
+    "group_id": "int",
+    "creator_id": "int"
+  }
+  ```
+
+### Get List of Events for a Group
+
+- Endpoint path: /groups/{group_id}/events
+- Endpoint method: GET
+
+- Headers:
+
+  - Authorization: Bearer token
+
+- Response: List of events associated with a specific group
 
 - Response shape (JSON):
   ```json
   [
     {
-      "user_id": "int",
+      "id": "int",
+      "title": "string",
+      "location": "string",
+      "image_url": "string",
+      "event_time_date": "2023-10-16T17:43:02.283000",
+      "description": "string",
       "group_id": "int",
-      "event_id": "int",
+      "creator_id": "int"
+    },
+    ...
+  ]
+  ```
+
+### Get List of Events for a Specific User
+
+- Endpoint path: /users/{user_id}/events
+- Endpoint method: GET
+
+- Headers:
+
+  - Authorization: Bearer token
+
+- Response: List of events associated with a specific User
+
+- Response shape (JSON):
+  ```json
+  [
+    {
+      "id": "int",
+      "title": "Event 1 (updated)",
+      "location": "string",
+      "image_url": "string",
+      "event_time_date": "2023-10-16T17:43:02.283000",
+      "description": "string",
+      "group_id": "int",
+      "creator_id": "int",
       "status": "string"
+    },
+    ...
+  ]
+  ```
+
+<!----------- EVENT ATTENDANCE ----------->
+
+### Get List of Attendees for an Event
+
+- Endpoint path: /events/{event_id}/attendees
+- Endpoint method: GET
+
+- Headers:
+
+  - Authorization: Bearer token
+
+- Response: Returned JSON that has a list of event attendents with the users name, ordered by their status, i.e. "going" vs "not going" vs "not seen"
+
+- Response shape (JSON):
+  ```json
+  [
+    {
+      "id": "int",
+      "status": "string",
+      "user_id": "int",
+      "event_id": "int",
+      "user_name": "string"
+    }, ...
+  ]
+  ```
+
+### Get List of all Attendees
+
+- Endpoint path: /attendees
+- Endpoint method: GET
+
+- Headers:
+
+  - Authorization: Bearer token
+
+- Response: Returned JSON that has a list of event attendents
+
+- Response shape (JSON):
+  ```json
+  [
+    {
+      "id": "int",
+      "status": "string",
+      "user_id": "int",
+      "event_id": "int",
+      "user_name": "string"
     }, ...
   ]
   ```
 
 ### Create an Attendance
 
-- Endpoint path: /groups/{group_id}/events/{event_id}/status
+- Endpoint path: /attendees
 - Endpoint method: POST
 
 - Headers:
@@ -502,25 +591,24 @@
 - Request shape (JSON):
   ```json
   {
-    "status": "Yes/No/Maybe",
-    "user_id": "int"
+    "event_id": "int"
   }
   ```
-- Response: Returned JSON that has information for specific event with: group information, event information, user information, and user event status
+- Response: Returned JSON that has information for specific event with: event and user ids, and a default user event status that is "Not Seen"
 
 - Response shape (JSON):
   ```json
   {
+    "id": "int",
+    "status": "Not Seen",
     "user_id": "int",
-    "group_id": "string",
-    "event_id": "int",
-    "status": "string"
+    "event_id": "int"
   }
   ```
 
 ### Update an Event Attendance
 
-- Endpoint path: /groups/{group_id}/events/{event_id}/status
+- Endpoint path: /attendees/{attendee_id}
 - Endpoint method: PUT
 
 - Headers:
@@ -530,8 +618,7 @@
 - Request shape (JSON):
   ```json
   {
-    "status": "Yes/No/Maybe",
-    "user_id": "int"
+    "status": "Going/Not Going/Maybe"
   }
   ```
 - Response: Updated event attendance detail with changed status information reflected
@@ -539,10 +626,10 @@
 - Response shape (JSON):
   ```json
   {
+    "id": "int",
+    "status": "string",
     "user_id": "int",
-    "group_id": "string",
-    "event_id": "int",
-    "status": "string"
+    "event_id": "int"
   }
   ```
 

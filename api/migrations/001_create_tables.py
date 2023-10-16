@@ -49,7 +49,7 @@ steps = [
             id SERIAL PRIMARY KEY NOT NULL,
             title VARCHAR(250) NOT NULL,
             location VARCHAR(250) NOT NULL,
-            image_url VARCHAR(250),
+            image_url TEXT,
             event_time_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
             description TEXT NOT NULL,
             group_id INT NOT NULL REFERENCES groups(id) ON DELETE CASCADE,
