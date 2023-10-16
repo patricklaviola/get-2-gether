@@ -9,7 +9,6 @@ class Error(BaseModel):
 
 class GroupIn(BaseModel):
     group_name: str
-    # creator_id: int
 
 
 class GroupOut(BaseModel):

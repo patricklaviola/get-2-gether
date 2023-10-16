@@ -12,7 +12,7 @@ steps = [
         # "Down" SQL statement
         """
         DROP TABLE users;
-        """
+        """,
     ],
     [
         # "Up" SQL statement
@@ -26,7 +26,7 @@ steps = [
         # "Down" SQL statement
         """
         DROP TABLE groups;
-        """
+        """,
     ],
     [
         # "Up" SQL statement
@@ -40,7 +40,7 @@ steps = [
         # "Down" SQL statement
         """
         DROP TABLE group_members;
-        """
+        """,
     ],
     [
         # "Up" SQL statement
@@ -52,14 +52,14 @@ steps = [
             image_url VARCHAR(250),
             event_time_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
             description TEXT NOT NULL,
-            group_id INT NOT NULL REFERENCES groups(id),
+            group_id INT NOT NULL REFERENCES groups(id) ON DELETE CASCADE,
             creator_id INT NOT NULL REFERENCES users(id)
         );
         """,
         # "Down" SQL statement
         """
         DROP TABLE events;
-        """
+        """,
     ],
     [
         # "Up" SQL statement
@@ -68,13 +68,13 @@ steps = [
             id SERIAL PRIMARY KEY NOT NULL,
             status TEXT NOT NULL,
             user_id INT NOT NULL REFERENCES users(id),
-            event_id INT NOT NULL REFERENCES events(id)
+            event_id INT NOT NULL REFERENCES events(id) ON DELETE CASCADE
         );
         """,
         # "Down" SQL statement
         """
         DROP TABLE event_attendees;
-        """
+        """,
     ],
     [
         # "Up" SQL statement
@@ -89,6 +89,6 @@ steps = [
         # "Down" SQL statement
         """
         DROP TABLE messages;
-        """
-    ]
+        """,
+    ],
 ]

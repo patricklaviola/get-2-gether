@@ -395,7 +395,7 @@
 
 ### Create an Event
 
-- Endpoint path: users/{user_id}/groups/{group_id}/events
+- Endpoint path: /groups/{group_id}/events
 - Endpoint method: POST
 
 - Headers:
