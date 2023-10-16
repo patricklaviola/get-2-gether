@@ -1,4 +1,4 @@
-from api.queries.groups.messages import (
+from queries.groups.messages import (
     MessageRepository,
     MessageOut,
     MessageIn,
