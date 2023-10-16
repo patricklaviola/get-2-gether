@@ -83,7 +83,9 @@ steps = [
             id SERIAL PRIMARY KEY NOT NULL,
             message TEXT NOT NULL,
             created_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            user_id INT NOT NULL REFERENCES users(id)
+            user_id INT NOT NULL REFERENCES users(id),
+            group_id INT NOT NULL REFERENCES groups(id)
+
         );
         """,
         # "Down" SQL statement

@@ -1,4 +1,9 @@
-from queries.groups.groups import GroupRepository, GroupOut, GroupIn, Error
+from queries.groups.groups import(
+    GroupRepository,
+    GroupOut,
+    GroupIn,
+    Error
+)
 from fastapi import APIRouter, Depends
 
 from authenticator import authenticator
