@@ -142,7 +142,14 @@ class EventRepository:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
-                        SELECT id, title, location, image_url, event_time_date, description, group_id, creator_id
+                        SELECT id
+                        , title
+                        , location
+                        , image_url
+                        , event_time_date
+                        , description
+                        , group_id
+                        , creator_id
                         FROM events
                         WHERE events.id = %s
                         """,

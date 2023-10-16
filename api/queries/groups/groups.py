@@ -32,7 +32,6 @@ class GroupRepository:
                     [group.group_name, creator_id],
                 )
                 id = result.fetchone()[0]
-                # old_data = group.dict()
                 return GroupOut(
                     id=id, group_name=group.group_name, creator_id=creator_id
                 )

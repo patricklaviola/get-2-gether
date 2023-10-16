@@ -56,7 +56,11 @@ class GroupMemberRepository:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
-                        SELECT group_members.id, groups.group_name, users.user_name, users.email, group_members.user_id
+                        SELECT group_members.id
+                        , groups.group_name
+                        , users.user_name
+                        , users.email
+                        , group_members.user_id
                         FROM group_members
                         INNER JOIN users
                         ON group_members.user_id = users.id
@@ -88,7 +92,11 @@ class GroupMemberRepository:
                 with conn.cursor() as db:
                     db.execute(
                         """
-                        SELECT group_members.id, groups.group_name, users.user_name, users.email, group_members.user_id
+                        SELECT group_members.id
+                        , groups.group_name
+                        , users.user_name
+                        , users.email
+                        , group_members.user_id
                         FROM group_members
                         INNER JOIN users
                         ON group_members.user_id = users.id
@@ -119,7 +127,11 @@ class GroupMemberRepository:
                 with conn.cursor() as db:
                     db.execute(
                         """
-                        SELECT group_members.id, groups.group_name, users.user_name, users.email, group_members.user_id
+                        SELECT group_members.id
+                        , groups.group_name
+                        , users.user_name
+                        , users.email
+                        , group_members.user_id
                         FROM group_members
                         INNER JOIN users
                         ON group_members.user_id = users.id

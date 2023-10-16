@@ -1,11 +1,12 @@
 from fastapi import APIRouter, Depends, Response
 from authenticator import authenticator
 from typing import List, Union
-from queries.groups.messages import(
-MessageRepository,
-MessageOut,
-MessageIn, Error,
-MessageUpdateOut
+from queries.groups.messages import (
+    MessageRepository,
+    MessageOut,
+    MessageIn,
+    Error,
+    MessageUpdateOut,
 )
 
 
@@ -13,9 +14,8 @@ router = APIRouter()
 
 
 @router.post(
-        "/groups/{group_id}/messages",
-        response_model=Union[MessageOut, Error]
-        )
+    "/groups/{group_id}/messages", response_model=Union[MessageOut, Error]
+)
 def create_message(
     group_id: int,
     message: MessageIn,
@@ -28,9 +28,8 @@ def create_message(
 
 
 @router.put(
-        "/messages/{message_id}",
-        response_model=Union[MessageUpdateOut, Error]
-        )
+    "/messages/{message_id}", response_model=Union[MessageUpdateOut, Error]
+)
 def update_message(
     message_id: int,
     message: MessageIn,
@@ -41,9 +40,9 @@ def update_message(
 
 
 @router.get(
-        "/groups/{group_id}/messages",
-        response_model=Union[List[MessageOut], Error]
-        )
+    "/groups/{group_id}/messages",
+    response_model=Union[List[MessageOut], Error],
+)
 def get_messages_by_group_id(
     group_id: int,
     response: Response,
