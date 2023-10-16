@@ -8,6 +8,7 @@ class Error(BaseModel):
 
 
 class EventAttendeeIn(BaseModel):
+    user_id: int
     event_id: int
 
 
@@ -32,7 +33,8 @@ class EventAttendeeUserInfoOut(BaseModel):
 
 class EventAttendeeRepository:
     def create_attendee(
-        self, attendee: EventAttendeeIn, user_id: int
+        self,
+        attendee: EventAttendeeIn,
     ) -> Union[Error, EventAttendeeOut]:
         try:
             with pool.connection() as conn:
@@ -45,13 +47,13 @@ class EventAttendeeRepository:
                             (%s, %s, %s)
                         RETURNING id
                         """,
-                        ["Not Seen", user_id, attendee.event_id],
+                        ["Not Seen", attendee.user_id, attendee.event_id],
                     )
                     id = result.fetchone()[0]
                     return EventAttendeeOut(
                         id=id,
                         status="Not Seen",
-                        user_id=user_id,
+                        user_id=attendee.user_id,
                         event_id=attendee.event_id,
                     )
 

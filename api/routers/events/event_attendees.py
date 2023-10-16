@@ -14,17 +14,16 @@ from typing import List, Union
 router = APIRouter()
 
 
-@router.post("/attendees", response_model=Union[Error, EventAttendeeOut])
+@router.post(
+    "/attendees",
+    response_model=Union[Error, EventAttendeeOut],
+)
 def create_attendee(
     attendee: EventAttendeeIn,
-    response: Response,
     repo: EventAttendeeRepository = Depends(),
     account_data: dict = Depends(authenticator.get_current_account_data),
 ):
-    user_id = account_data["id"]
-    result = repo.create_attendee(attendee, user_id)
-    if result is None:
-        response.status_code = 400
+    result = repo.create_attendee(attendee)
     return result
 
 
