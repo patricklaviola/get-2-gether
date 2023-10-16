@@ -60,11 +60,11 @@
   true
   ```
 
-<!----------- CHAT ----------->
+<!----------- Messages ----------->
 
 ### Create a message
 
-- Endpoint path: users/{user_id}/groups/{group_id}
+- Endpoint path: /groups/{group_id}/messages
 - Endpoint method: POST
 
 - Headers:
@@ -74,7 +74,7 @@
 - Request body:
   ```json
   {
-      "text": string,
+      "message": string,
   }
   ```
 - Response: An indication of success or failure
@@ -86,13 +86,13 @@
       "message": string,
       "created_on": "YYYY-MM-DDTHH:MM:SS",
       "user_id": int,
-      "success": boolean
+      "group_id": int,
   }
   ```
 
 ### Display/get list of messages for the group, display in chronological order
 
-- Endpoint path: users/{user_id}/groups/{group_id}
+- Endpoint path: /groups/{group_id}/messages
 - Endpoint method: GET
 
 - Headers:
@@ -106,16 +106,56 @@
   ```json
   {
 
-      { "messages": [
-          {
-              "id": int,
-              “text”: sting,
-              “created_on”: "YYYY-MM-DDTHH:MM:SS",
-              “user_id”: int
-          }
-          ]
-      }
+    { "messages": [
+        {
+          "id": int,
+          "message": string,
+          "created_on": "YYYY-MM-DDTHH:MM:SS",
+          "user_id": int,
+          "group_id": int,
+        }
+        ]
+    }
 
+  }
+  ```
+
+  ### Updated message
+
+- Endpoint path: /groups/{group_id}/messages
+- Endpoint method: PUT
+
+- Headers:
+
+  - Authorization: Bearer token
+
+- Response: Update a message by message_id
+
+- Response shape (JSON):
+
+  ```json
+  {
+  "message": string,
+  "created_on": "YYYY-MM-DDTHH:MM:SS",
+  }
+  ```
+
+  ### Delete
+
+- Endpoint path: /messages/{message_id}
+- Endpoint method: DELETE
+
+- Headers:
+
+  - Authorization: Bearer token
+
+- Response: Delete a message by message_id
+
+- Response shape (JSON):
+
+  ```json
+  {
+    true
   }
   ```
 
@@ -233,7 +273,31 @@
 
 <!----------- GROUP MEMBERS ----------->
 
-### CREATE A GROUP MEMBER
+### GET LIST OF GROUP MEMBERS
+
+- Endpoint path: /groups/{group_id}/group_members    
+- Endpoint method: GET
+
+- Headers:
+
+  - Authorization: Bearer token
+
+- Response: Group members
+
+- Response shape (JSON):
+  ```json
+  {
+      "member_id": int,
+      "group_id": int,
+      "user" : [
+        "id": int,
+        "user_name": int,
+        "email": string,
+      ]
+  }
+  ```
+
+### ADD MEMBER TO GROUP
 
 - Endpoint path: /group_members
 - Endpoint method: POST
