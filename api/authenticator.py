@@ -43,4 +43,4 @@ class ExampleAuthenticator(
         )
 
 
-authenticator = ExampleAuthenticator(os.environ["SIGNING_KEY"])
+authenticator = ExampleAuthenticator(os.environ.get("SIGNING_KEY"))

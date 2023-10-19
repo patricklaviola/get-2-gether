@@ -19,7 +19,7 @@ app.include_router(group_members.router)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[os.environ.get("CORS_HOST", "http://localhost:3000")],
+    allow_origins=["http://localhost:3000", os.environ.get("CORS_HOST", None)],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

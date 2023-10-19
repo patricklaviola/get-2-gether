@@ -2,6 +2,7 @@ import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import LoginForm from "./LoginForm.js";
+import SignUpForm from "./SignUpForm";
 import Nav from "./Nav";
 
 function App() {
@@ -15,7 +16,7 @@ function App() {
           <Nav/>
           <Routes>
             {/* <Route exact path="/" element={<Main />}></Route> */}
-            {/* <Route exact path="/signup" element={<SignupForm />}></Route> */}
+            <Route exact path="/signup" element={<SignUpForm />}></Route>
             <Route exact path="/login" element={<LoginForm />}></Route>
           </Routes>
         </AuthProvider>

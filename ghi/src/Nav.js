@@ -26,8 +26,8 @@ const Nav = () => {
             </button>
 
             <button className="btn btn-danger" onClick= {
-                () => {
-                    logout();
+                async () => {
+                    await logout();
                     refreshPage();
                     }
                     }>
@@ -42,7 +42,7 @@ const Nav = () => {
               className="btn btn-success"
               onClick={handleClick}
             >
-              Signup <i className="bi bi-person-plus"></i>
+              Sign Up <i className="bi bi-person-plus"></i>
             </button>
           </div>
         </div>
