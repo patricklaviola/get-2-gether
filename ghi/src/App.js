@@ -1,10 +1,11 @@
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import "./App.css";
-import LoginForm from "./LoginForm.js";
+import LoginForm from "./Login_SignUp/LoginForm.js";
+import SignUpForm from "./Login_SignUp/SignUpForm";
 import GroupDashboard from "./GroupDashboard.js";
-import SignUpForm from "./SignUpForm";
 import Nav from "./Nav";
+import "./App.css";
+import CreateEventForm from "./Components/Events_/CreateEventModalForm.js";
 
 function App() {
   const domain = /https:\/\/[^/]+/;
@@ -18,11 +19,8 @@ function App() {
           <Routes>
             <Route exact path="/signup" element={<SignUpForm />}></Route>
             <Route exact path="/login" element={<LoginForm />}></Route>
-            <Route
-              exact
-              path="/groups/:id"
-              element={<GroupDashboard />}
-            ></Route>
+            <Route exact path="/groups/:id" element={<GroupDashboard />}></Route>
+            <Route exact path="/groups/{group_id}/events" element={<CreateEventForm />}></Route>
           </Routes>
         </AuthProvider>
       </BrowserRouter>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import CreateEventModalForm from "./Components/Events_/CreateEventModalForm";
 // import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 
 function GroupDashboard(props) {
@@ -183,7 +184,7 @@ function GroupDashboard(props) {
           <div
             className="col-6"
             data-bs-spy="scroll"
-            style={{ "overflow-y": "scroll", height: "750px" }}
+            style={{ overflowY: "scroll", height: "750px" }}
           >
             <div className="col">
               <div className="">
@@ -234,6 +235,7 @@ function GroupDashboard(props) {
                     );
                   })}
                 </div>
+                <CreateEventModalForm />
               </div>
             </div>
           </div>
@@ -241,50 +243,51 @@ function GroupDashboard(props) {
           <div className="col-6">
             <div className="card">
               <div className="col card-body">
-                <div class="col">
-                  <ul class="list-unstyled">
-                    <div style={{ height: "550px", "overflow-y": "scroll" }}>
+                <div className="col">
+                  <ul className="list-unstyled">
+                    <div style={{ height: "550px", overflowY: "scroll" }}>
                       {messages.map((m) => {
                         if (m.user_id === 1) {
                           return (
-                            <li class="d-flex justify-content-between mb-4">
-                              <div class="card w-100">
-                                <div class="card-header d-flex justify-content-between p-3">
-                                  <p class="fw-bold mb-0">{m.user_id}</p>
-                                  <p class="text-muted small mb-0">
-                                    <i class="far fa-clock"></i> {m.created_on}
+                            <li className="d-flex justify-content-between mb-4">
+                              <div className="card w-100">
+                                <div className="card-header d-flex justify-content-between p-3">
+                                  <p className="fw-bold mb-0">{m.user_id}</p>
+                                  <p className="text-muted small mb-0">
+                                    <i className="far fa-clock"></i>{" "}
+                                    {m.created_on}
                                   </p>
                                 </div>
-                                <div class="card-body">
-                                  <p class="mb-0">{m.message}</p>
+                                <div className="card-body">
+                                  <p className="mb-0">{m.message}</p>
                                 </div>
                               </div>
                               <img
                                 src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp"
                                 alt="avatar"
-                                class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong"
+                                className="rounded-circle d-flex align-self-start ms-3 shadow-1-strong"
                                 width="60"
                               />
                             </li>
                           );
                         } else {
                           return (
-                            <li class="d-flex justify-content-between mb-4">
+                            <li className="d-flex justify-content-between mb-4">
                               <img
                                 src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
                                 alt="avatar"
-                                class="rounded-circle d-flex align-self-start me-3 shadow-1-strong"
+                                className="rounded-circle d-flex align-self-start me-3 shadow-1-strong"
                                 width="60"
                               />
-                              <div class="card">
-                                <div class="card-header d-flex justify-content-between p-3">
-                                  <p class="fw-bold mb-0">Brad Pitt</p>
-                                  <p class="text-muted small mb-0">
-                                    <i class="far fa-clock"></i> 10 mins ago
+                              <div className="card">
+                                <div className="card-header d-flex justify-content-between p-3">
+                                  <p className="fw-bold mb-0">Brad Pitt</p>
+                                  <p className="text-muted small mb-0">
+                                    <i className="far fa-clock"></i> 10 mins ago
                                   </p>
                                 </div>
-                                <div class="card-body">
-                                  <p class="mb-0">
+                                <div className="card-body">
+                                  <p className="mb-0">
                                     Lorem ipsum dolor sit amet, consectetur
                                     adipiscing elit, sed do eiusmod tempor
                                     incididunt ut labore et dolore magna aliqua.
@@ -297,16 +300,19 @@ function GroupDashboard(props) {
                       })}
                       {/* <div ref={this.messagesEndRef} /> */}
                     </div>
-                    <li class="bg-white mb-3">
-                      <div class="form-outline">
+                    <li className="bg-white mb-3">
+                      <div className="form-outline">
                         <textarea
                           onChange={handleMessageChange}
-                          class="form-control"
+                          className="form-control"
                           id="textAreaExample2"
                           rows="4"
                           value={incomingMessage}
                         ></textarea>
-                        <label class="form-label" for="textAreaExample2">
+                        <label
+                          className="form-label"
+                          htmlFor="textAreaExample2"
+                        >
                           Message
                         </label>
                       </div>
@@ -314,7 +320,7 @@ function GroupDashboard(props) {
                     <button
                       onClick={handleMessage}
                       type="button"
-                      class="btn btn-info btn-rounded float-end"
+                      className="btn btn-info btn-rounded float-end"
                     >
                       Send
                     </button>
