@@ -34,7 +34,8 @@ steps = [
         CREATE TABLE group_members (
             id SERIAL PRIMARY KEY NOT NULL,
             group_id INT NOT NULL REFERENCES groups(id),
-            user_id INT NOT NULL REFERENCES users(id)
+            user_id INT NOT NULL REFERENCES users(id),
+            UNIQUE(group_id, user_id)
         );
         """,
         # "Down" SQL statement

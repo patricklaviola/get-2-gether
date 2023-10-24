@@ -24,6 +24,7 @@ class GroupMemberInfoOut(BaseModel):
     user_name: str
     email: str
     user_id: int
+    group_id: int
 
 
 class FriendOut(BaseModel):
@@ -67,6 +68,7 @@ class GroupMemberRepository:
                         , users.user_name
                         , users.email
                         , group_members.user_id
+                        , groups.id
                         FROM group_members
                         INNER JOIN users
                         ON group_members.user_id = users.id
@@ -85,6 +87,7 @@ class GroupMemberRepository:
                         user_name=record[2],
                         email=record[3],
                         user_id=record[4],
+                        group_id=record[5],
                     )
         except Exception as e:
             print(e)
@@ -103,6 +106,7 @@ class GroupMemberRepository:
                         , users.user_name
                         , users.email
                         , group_members.user_id
+                        , groups.id
                         FROM group_members
                         INNER JOIN users
                         ON group_members.user_id = users.id
@@ -120,6 +124,7 @@ class GroupMemberRepository:
                             user_name=result[2],
                             email=result[3],
                             user_id=result[4],
+                            group_id=result[5],
                         )
                         group_members.append(group_member)
                     return group_members
@@ -138,6 +143,7 @@ class GroupMemberRepository:
                         , users.user_name
                         , users.email
                         , group_members.user_id
+                        , groups.id
                         FROM group_members
                         INNER JOIN users
                         ON group_members.user_id = users.id
@@ -153,6 +159,7 @@ class GroupMemberRepository:
                             user_name=result[2],
                             email=result[3],
                             user_id=result[4],
+                            group_id=result[5],
                         )
                         group_members.append(group_member)
                     return group_members

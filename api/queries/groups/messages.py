@@ -92,7 +92,7 @@ class MessageRepository:
                         , messages.group_id
                         FROM messages
                         WHERE messages.group_id = %s
-                        ORDER BY messages.created_on DESC
+                        ORDER BY messages.created_on ASC
                         """,
                         [group_id],
                     )

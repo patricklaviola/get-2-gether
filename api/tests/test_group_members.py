@@ -53,6 +53,7 @@ class GetGroupMemberRepository:
             user_name="Hello World",
             email="test@test.com",
             user_id=group_member_id,
+            group_id=1,
         )
 
 
@@ -68,6 +69,7 @@ def test_get_group_member():
         "user_name": "Hello World",
         "email": "test@test.com",
         "user_id": 4,
+        "group_id": 1,
     }
 
     response = client.get("/group_members/4")
@@ -85,6 +87,7 @@ class GetAllGroupMembersRepository:
                 user_name="Hello World",
                 email="test@test.com",
                 user_id=4,
+                group_id=1,
             )
         ]
 
@@ -104,6 +107,7 @@ def test_get_all_group_members():
             "user_name": "Hello World",
             "email": "test@test.com",
             "user_id": 4,
+            "group_id": 1,
         }
     ]
 
@@ -122,6 +126,7 @@ class GetAllGroupMembersByGroupIDRepository:
                 user_name="Hello World",
                 email="test@test.com",
                 user_id=4,
+                group_id=1,
             )
         ]
 
@@ -141,6 +146,7 @@ def test_get_all_group_members_by_group_id():
             "user_name": "Hello World",
             "email": "test@test.com",
             "user_id": 4,
+            "group_id": 1,
         }
     ]
 

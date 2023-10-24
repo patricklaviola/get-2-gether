@@ -6,6 +6,7 @@ import GroupDashboard from "./GroupDashboard.js";
 import PersonalDashboard from "./PersonalDashboard";
 
 import Nav from "./Nav";
+import AddGroupMemberForm from "./AddGroupMemberForm";
 import GroupForm from "./GroupForm";
 import "./App.css";
 
@@ -22,12 +23,9 @@ function App() {
             <Route exact path="/signup" element={<SignUpForm />}></Route>
             <Route exact path="/login" element={<LoginForm />}></Route>
             <Route exact path="/groups" element={<GroupForm />} />
-            <Route
-              exact
-              path="/groups/:id"
-              element={<GroupDashboard />}
-            ></Route>
             <Route exact path="/users/:id" element={<PersonalDashboard />}></Route>
+            <Route exact path ="/group_members" element={<AddGroupMemberForm />} />
+            <Route exact path="/groups/:id" element={<GroupDashboard />}></Route>
           </Routes>
         </AuthProvider>
       </BrowserRouter>
