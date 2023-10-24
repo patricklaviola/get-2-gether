@@ -2,35 +2,25 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import CreateEventModalForm from "./Components/Events_/CreateEventModalForm";
 import ViewEventDetailsModal from "./Components/Events_/ViewEventDetailsModal";
-// import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 
 function GroupDashboard(props) {
-  // const { token } = useAuthContext();
-  // const messagesEndRef = React.createRef();
   const groupId = useParams();
   const [events, setEvents] = useState([]);
   const [groupMembers, setGroupMembers] = useState([]);
   const [messages, setMessages] = useState([]);
-  const [incomingMessage, setMessage] = useState("");
-  // const [timeStamp, setTimeStamp] = useState("");
-  // const [userInfo] = useAuthContext();
-  // const [eventAttendees, setEventAttendees] = useState([]);
-  // const [groupInfo, setGroupInfo] = useState({});
-
-  // const scrollToBottom = () => {
-  //   messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  // };
+  const [userInfo, setUserInfo] = useState({});
+  const [messageDisplay, setMessageDisplay] = useState("");
 
   const handleMessageChange = (event) => {
     const value = event.target.value;
-    setMessage(value);
+    setMessageDisplay(value);
   };
 
-  const handleMessage = async () => {
+  const handleMessage = async (event) => {
     const url = `${process.env.REACT_APP_API_HOST}/groups/${groupId.id}/messages`;
     const m = {
-      message: incomingMessage,
-      created_on: "2023-10-19T21:28:29.472000",
+      message: messageDisplay,
+      created_on: new Date().toISOString(),
     };
     const fetchConfig = {
       method: "post",
@@ -45,44 +35,117 @@ function GroupDashboard(props) {
       const finished = await response.json();
       console.log(finished);
       fetchMessages();
-      // scrollToBottom();
     }
+    setMessageDisplay("");
   };
 
-  // const fetchGroupInfo = async () => {
-  //   const url = `${process.env.REACT_APP_API_HOST}/groups/${groupId.id}`;
-  //   console.log(url);
-  //   const response = await fetch(url, { credentials: "include" });
-  //   if (response.ok) {
-  //     const data = await response.json();
-  //     setGroupInfo(data);
-  //   }
-  // };
-
-  // const fetchGroupMembers = async () => {
-  //   const url = `${process.env.REACT_APP_API_HOST}/groups/${groupId.id}/group_members`;
-  //   const response = await fetch(url, { credentials: "include" });
-  //   if (response.ok) {
-  //     const data = await response.json();
-  //     setGroupMembers(data);
-  //   }
-  // };
-
-  // const fetchEvents = async () => {
-  //   const url = `${process.env.REACT_APP_API_HOST}/groups/${groupId.id}/events`;
-  //   const response = await fetch(url, { credentials: "include" });
-  //   if (response.ok) {
-  //     const data = await response.json();
-  //     console.log(data);
-  //     setEvents(data);
-  //   }
-  // };
+  const handleGoingClick = async (id) => {
+    const allAttendeeUrl = `${process.env.REACT_APP_API_HOST}/events/${id}/attendees`;
+    console.log(allAttendeeUrl);
+    const response1 = await fetch(allAttendeeUrl, { credentials: "include" });
+    let attendeeId = 0;
+    if (response1.ok) {
+      const data1 = await response1.json();
+      console.log(data1);
+      for (let i = 0; i < data1.length; i++) {
+        let currAttendee = data1[i];
+        if (currAttendee.user_id === userInfo.id) {
+          attendeeId = currAttendee.id;
+          break;
+        }
+      }
+    }
+    const url = `${process.env.REACT_APP_API_HOST}/attendees/${attendeeId}`;
+    let m = {
+      status: "Going",
+    };
+    const fetchConfig = {
+      method: "put",
+      body: JSON.stringify(m),
+      headers: {
+        "Content-type": "application/json",
+      },
+      credentials: "include",
+    };
+    const response2 = await fetch(url, fetchConfig);
+    if (response2.ok) {
+      const finished = await response2.json();
+      console.log(finished);
+    }
+  };
+  const handleMaybeClick = async (id) => {
+    const allAttendeeUrl = `${process.env.REACT_APP_API_HOST}/events/${id}/attendees`;
+    const response1 = await fetch(allAttendeeUrl, { credentials: "include" });
+    let attendeeId = 0;
+    if (response1.ok) {
+      const data1 = await response1.json();
+      console.log(data1);
+      for (let i = 0; i < data1.length; i++) {
+        let currAttendee = data1[i];
+        if (currAttendee.user_id === userInfo.id) {
+          attendeeId = currAttendee.id;
+          break;
+        }
+      }
+    }
+    const url = `${process.env.REACT_APP_API_HOST}/attendees/${attendeeId}`;
+    let m = {
+      status: "Maybe",
+    };
+    const fetchConfig = {
+      method: "put",
+      body: JSON.stringify(m),
+      headers: {
+        "Content-type": "application/json",
+      },
+      credentials: "include",
+    };
+    const response2 = await fetch(url, fetchConfig);
+    if (response2.ok) {
+      const finished = await response2.json();
+      console.log(finished);
+    }
+  };
+  const handleNotGoingClick = async (id) => {
+    const allAttendeeUrl = `${process.env.REACT_APP_API_HOST}/events/${id}/attendees`;
+    const response1 = await fetch(allAttendeeUrl, { credentials: "include" });
+    let attendeeId = 0;
+    if (response1.ok) {
+      const data1 = await response1.json();
+      console.log(data1);
+      for (let i = 0; i < data1.length; i++) {
+        let currAttendee = data1[i];
+        if (currAttendee.user_id === userInfo.id) {
+          attendeeId = currAttendee.id;
+          break;
+        }
+      }
+    }
+    const url = `${process.env.REACT_APP_API_HOST}/attendees/${attendeeId}`;
+    let m = {
+      status: "Not Going",
+    };
+    const fetchConfig = {
+      method: "put",
+      body: JSON.stringify(m),
+      headers: {
+        "Content-type": "application/json",
+      },
+      credentials: "include",
+    };
+    const response2 = await fetch(url, fetchConfig);
+    if (response2.ok) {
+      const finished = await response2.json();
+      console.log(finished);
+    }
+  };
 
   const fetchMessages = async () => {
     const url = `${process.env.REACT_APP_API_HOST}/groups/${groupId.id}/messages`;
     const response = await fetch(url, { credentials: "include" });
     if (response.ok) {
       const data = await response.json();
+      console.log("fetching messages");
       setMessages(data);
     }
   };
@@ -91,6 +154,7 @@ function GroupDashboard(props) {
     const url1 = `${process.env.REACT_APP_API_HOST}/groups/${groupId.id}/group_members`;
     const url2 = `${process.env.REACT_APP_API_HOST}/groups/${groupId.id}/events`;
     const url3 = `${process.env.REACT_APP_API_HOST}/groups/${groupId.id}/messages`;
+    const url4 = `${process.env.REACT_APP_API_HOST}/token`;
 
     const response1 = await fetch(url1, { credentials: "include" });
     if (response1.ok) {
@@ -108,10 +172,18 @@ function GroupDashboard(props) {
       const data3 = await response3.json();
       setMessages(data3);
     }
+    const response4 = await fetch(url4, { credentials: "include" });
+    if (response4.ok) {
+      const data4 = await response4.json();
+      console.log(data4["account"]);
+      setUserInfo(data4["account"]);
+    }
   };
 
   useEffect(() => {
     fetchData();
+    let m = setInterval(fetchMessages, 2000);
+    return () => clearInterval(m);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -185,16 +257,17 @@ function GroupDashboard(props) {
       </div>
       <div className="container">
         <div className="row">
-          <h1>Events</h1>
-          <div
-            className="col-6"
-            data-bs-spy="scroll"
-            style={{ overflowY: "scroll", height: "750px" }}
-          >
-            <div className="col">
+          <div className="col-6">
+            <h4>Events</h4>
+            <div
+              className="col"
+              data-bs-spy="scroll"
+              style={{ overflowY: "auto", height: "820px", width: "40rem" }}
+            >
               <div className="">
                 <div className="row">
-                  {events.map((event,) => {
+                  <CreateEventModalForm groupMembers={groupMembers} />
+                  {events.map((event, index) => {
                     return (
                       <div key={event.id} className="col gy-5">
                         <div className="card" style={{ width: "18rem" }}>
@@ -216,101 +289,129 @@ function GroupDashboard(props) {
                             </li>
                           </ul>
                           <div className="card-body">
-                            <a
-                              href="https://www.google.com/"
+                            <button
+                              onClick={() => handleGoingClick(event.id)}
+                              type="button"
                               className="card-link"
                             >
                               Going
-                            </a>
-                            <a
-                              href="https://www.google.com/"
+                            </button>
+                            <button
+                              onClick={() => handleMaybeClick(event.id)}
+                              type="button"
                               className="card-link"
                             >
                               Maybe
-                            </a>
-                            <a
-                              href="https://www.google.com/"
+                            </button>
+                            <button
+                              onClick={() => handleNotGoingClick(event.id)}
+                              type="button"
                               className="card-link"
                             >
                               Not Going
-                            </a>
+                            </button>
                           </div>
                           <ViewEventDetailsModal event={event} />
                         </div>
                         <br />
-                        
                       </div>
                     );
                   })}
-                  <CreateEventModalForm groupMembers={groupMembers} />
                 </div>
               </div>
             </div>
           </div>
           {/* <br></br> */}
           <div className="col-6">
+            <h4>Chat</h4>
             <div className="card">
               <div className="col card-body">
                 <div className="col">
                   <ul className="list-unstyled">
-                    <div style={{ height: "550px", overflowY: "scroll" }}>
-                      {messages.map((m) => {
-                        if (m.user_id === 1) {
-                          return (
-                            <li
-                              key={m.user_id.id}
-                              className="d-flex justify-content-between mb-4"
-                            >
-                              <div className="card w-100">
-                                <div className="card-header d-flex justify-content-between p-3">
-                                  <p className="fw-bold mb-0">{m.user_id}</p>
-                                  <p className="text-muted small mb-0">
-                                    <i className="far fa-clock"></i>{" "}
-                                    {m.created_on}
-                                  </p>
-                                </div>
-                                <div className="card-body">
-                                  <p className="mb-0">{m.message}</p>
-                                </div>
-                              </div>
-                              <img
-                                src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp"
-                                alt="avatar"
-                                className="rounded-circle d-flex align-self-start ms-3 shadow-1-strong"
-                                width="60"
-                              />
-                            </li>
-                          );
-                        } else {
-                          return (
-                            <li className="d-flex justify-content-between mb-4">
-                              <img
-                                src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
-                                alt="avatar"
-                                className="rounded-circle d-flex align-self-start me-3 shadow-1-strong"
-                                width="60"
-                              />
-                              <div className="card">
-                                <div className="card-header d-flex justify-content-between p-3">
-                                  <p className="fw-bold mb-0">Brad Pitt</p>
-                                  <p className="text-muted small mb-0">
-                                    <i className="far fa-clock"></i> 10 mins ago
-                                  </p>
-                                </div>
-                                <div className="card-body">
-                                  <p className="mb-0">
-                                    Lorem ipsum dolor sit amet, consectetur
-                                    adipiscing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna aliqua.
-                                  </p>
-                                </div>
-                              </div>
-                            </li>
-                          );
-                        }
-                      })}
-                      {/* <div ref={this.messagesEndRef} /> */}
+                    <div
+                      style={{
+                        height: "590px",
+                        overflowY: "auto",
+                        transform: "rotate(180deg)",
+                        direction: "rtl",
+                      }}
+                    >
+                      <div
+                        style={{
+                          paddingBottom: "10px",
+                          transform: "rotate(180deg)",
+                        }}
+                      >
+                        {messages
+                          .sort((a, b) => {
+                            return b.created_on > a.created_on;
+                          })
+                          .map((m) => {
+                            if (m.user_id === userInfo.id) {
+                              return (
+                                <li
+                                  key={m.id}
+                                  className="d-flex justify-content-between mb-4"
+                                >
+                                  <div className="card w-100">
+                                    <div className="card-header d-flex justify-content-between p-3">
+                                      <p className="fw-bold mb-0">
+                                        {m.user_name}
+                                      </p>
+                                      <p className="text-muted small mb-0">
+                                        <i className="far fa-clock"></i>{" "}
+                                        {new Date(m.created_on).toLocaleString(
+                                          "en-US",
+                                          { timeZome: "America/LosAngeles" }
+                                        )}
+                                      </p>
+                                    </div>
+                                    <div className="card-body">
+                                      <p className="mb-0">{m.message}</p>
+                                    </div>
+                                  </div>
+                                  <img
+                                    src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp"
+                                    alt="avatar"
+                                    className="rounded-circle d-flex align-self-start ms-3 shadow-1-strong"
+                                    width="60"
+                                  />
+                                </li>
+                              );
+                            } else {
+                              return (
+                                <li
+                                  key={m.id}
+                                  className="d-flex justify-content-between mb-4"
+                                >
+                                  <img
+                                    src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
+                                    alt="avatar"
+                                    className="rounded-circle d-flex align-self-start me-3 shadow-1-strong"
+                                    width="60"
+                                  />
+                                  <div className="card w-100">
+                                    <div className="card-header d-flex justify-content-between p-3">
+                                      <p className="fw-bold mb-0">{m.id}</p>
+                                      <p className="text-muted small mb-0">
+                                        <i className="far fa-clock"></i>{" "}
+                                        {new Date(m.created_on).toLocaleString(
+                                          "en-US",
+                                          { timeZome: "America/LosAngeles" }
+                                        )}
+                                      </p>
+                                    </div>
+                                    <div className="card-body">
+                                      <p className="mb-0">{m.message}</p>
+                                    </div>
+                                  </div>
+                                </li>
+                              );
+                            }
+                          })}
+                      </div>
                     </div>
+                    <hr className="dropdown-divider" />
                     <li className="bg-white mb-3">
                       <div className="form-outline">
                         <textarea
@@ -318,7 +419,7 @@ function GroupDashboard(props) {
                           className="form-control"
                           id="textAreaExample2"
                           rows="4"
-                          value={incomingMessage}
+                          value={messageDisplay}
                         ></textarea>
                         <label
                           className="form-label"
