@@ -29,12 +29,20 @@ const Nav = () => {
             >
               <NavLink to="/login">Logout</NavLink>
             </button>
+
             <button
               type="button"
               className="btn"
               onClick={handleClick}
             >
-              <NavLink to="/signup">Sign Up</NavLink>
+              Sign Up <i className="bi bi-person-plus"></i>
+            </button>
+
+            <button className="btn btn-link">
+              <NavLink to="/groups">
+                Create New Group
+              </NavLink>
+              <i className="bi bi-plus"></i>
             </button>
           </div>
         </div>

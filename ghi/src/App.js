@@ -4,6 +4,7 @@ import LoginForm from "./Login_SignUp/LoginForm.js";
 import SignUpForm from "./Login_SignUp/SignUpForm";
 import GroupDashboard from "./GroupDashboard.js";
 import Nav from "./Nav";
+import GroupForm from "./GroupForm";
 import "./App.css";
 import CreateEventForm from "./Components/Events_/CreateEventModalForm.js";
 
@@ -19,6 +20,12 @@ function App() {
           <Routes>
             <Route exact path="/signup" element={<SignUpForm />}></Route>
             <Route exact path="/login" element={<LoginForm />}></Route>
+            <Route exact path="/groups" element={<GroupForm />}/>
+            <Route
+              exact
+              path="/groups/:id"
+              element={<GroupDashboard />}
+            ></Route>
             <Route exact path="/groups/:id" element={<GroupDashboard />}></Route>
             <Route exact path="/groups/{group_id}/events" element={<CreateEventForm />}></Route>
           </Routes>
