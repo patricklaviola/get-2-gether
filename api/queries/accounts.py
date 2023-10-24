@@ -1,52 +1,37 @@
 import os
 from psycopg_pool import ConnectionPool
 from pydantic import BaseModel
+from typing import List, Union
 
-pool = ConnectionPool(
-    conninfo=os.environ.get("DATABASE_URL")
-)
+pool = ConnectionPool(conninfo=os.environ.get("DATABASE_URL"))
 
 
-class Error(
-    BaseModel
-):
+class Error(BaseModel):
     message: str
 
 
-class DuplicateAccountError(
-    ValueError
-):
+class DuplicateAccountError(ValueError):
     pass
 
 
-class AccountIn(
-    BaseModel
-):
+class AccountIn(BaseModel):
     user_name: str
     email: str
     password: str
 
 
-class AccountOut(
-    BaseModel
-):
+class AccountOut(BaseModel):
     id: int
     user_name: str
     email: str
 
 
-class AccountOutWithPassword(
-    AccountOut
-):
+class AccountOutWithPassword(AccountOut):
     hashed_password: str
 
 
 class AccountRepo:
-    def record_to_account_out(
-        self, record
-    ) -> (
-        AccountOutWithPassword
-    ):
+    def record_to_account_out(self, record) -> AccountOutWithPassword:
         account_dict = {
             "id": record[0],
             "user_name": record[1],
@@ -57,9 +42,7 @@ class AccountRepo:
 
     def create(
         self, user: AccountIn, hashed_password: str
-    ) -> (
-        AccountOutWithPassword
-    ):
+    ) -> AccountOutWithPassword:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -78,9 +61,7 @@ class AccountRepo:
                             hashed_password,
                         ],
                     )
-                    id = result.fetchone()[
-                        0
-                    ]
+                    id = result.fetchone()[0]
                     return AccountOutWithPassword(
                         id=id,
                         user_name=user.user_name,
@@ -88,15 +69,9 @@ class AccountRepo:
                         hashed_password=hashed_password,
                     )
         except Exception:
-            return {
-                "message": "Could not create a user"
-            }
+            return {"message": "Could not create a user"}
 
-    def get(
-        self, email: str
-    ) -> (
-        AccountOutWithPassword
-    ):
+    def get(self, email: str) -> AccountOutWithPassword:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -107,19 +82,33 @@ class AccountRepo:
                         FROM users
                         WHERE email = %s
                         """,
-                        [
-                            email
-                        ],
+                        [email],
                     )
                     record = result.fetchone()
                     if record is None:
                         return None
-                    return self.record_to_account_out(
-                        record
-                    )
+                    return self.record_to_account_out(record)
         except Exception:
-            return {
-                "message": "Could not get account"
-            }
+            return {"message": "Could not get account"}
 
-    pass
+    def get_all_accounts(self) -> Union[Error, List[AccountOut]]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                            SELECT id, user_name, email
+                            FROM users
+                            ORDER BY id
+                            """
+                    )
+                    result = []
+                    for record in db:
+                        account = AccountOut(
+                            id=record[0], user_name=record[1], email=record[2]
+                        )
+                        result.append(account)
+                    return result
+        except Exception as e:
+            print(e)
+            return {"message": "Could not get all accounts"}

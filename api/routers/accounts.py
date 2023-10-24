@@ -17,7 +17,9 @@ from queries.accounts import (
     AccountOut,
     AccountRepo,
     DuplicateAccountError,
+    Error,
 )
+from typing import List, Union
 
 
 class AccountForm(BaseModel):
@@ -66,7 +68,7 @@ async def create_account(
 @router.get("/token", response_model=AccountToken | None)
 async def get_token(
     request: Request,
-    account: AccountOut = Depends(authenticator.try_get_current_account_data)
+    account: AccountOut = Depends(authenticator.try_get_current_account_data),
 ) -> AccountToken | None:
     if account and authenticator.cookie_name in request.cookies:
         return {
@@ -74,3 +76,11 @@ async def get_token(
             "type": "Bearer",
             "account": account,
         }
+
+
+@router.get("/accounts", response_model=Union[Error, List[AccountOut]])
+def get_all_accounts(
+    repo: AccountRepo = Depends(),
+    account_data: dict = Depends(authenticator.get_current_account_data),
+):
+    return repo.get_all_accounts()
