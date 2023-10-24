@@ -194,7 +194,7 @@ function GroupDashboard(props) {
             <div className="col">
               <div className="">
                 <div className="row">
-                  {events.map((event, index) => {
+                  {events.map((event,) => {
                     return (
                       <div key={event.id} className="col gy-5">
                         <div className="card" style={{ width: "18rem" }}>
@@ -235,14 +235,14 @@ function GroupDashboard(props) {
                               Not Going
                             </a>
                           </div>
-                          <ViewEventDetailsModal event={events[index]} />
+                          <ViewEventDetailsModal event={event} />
                         </div>
                         <br />
                         
                       </div>
                     );
                   })}
-                  <CreateEventModalForm />
+                  <CreateEventModalForm groupMembers={groupMembers} />
                 </div>
               </div>
             </div>

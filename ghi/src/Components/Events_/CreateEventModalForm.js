@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 
-function CreateEventModalForm() {
+function CreateEventModalForm(props) {
   const groupId = useParams();
 
 
@@ -159,15 +159,15 @@ function CreateEventModalForm() {
                     />
                   </div>
                 </div>
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  data-bs-dismiss="modal"
-                >
-                  Create
-                </button>
+                <div className="modal-footer">
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    data-bs-dismiss="modal"
+                  >
+                    Create
+                  </button>
+                </div>
               </div>
             </form>
           </div>

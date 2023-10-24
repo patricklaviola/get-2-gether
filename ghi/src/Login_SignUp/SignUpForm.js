@@ -1,5 +1,5 @@
 import React from "react";
-import "./SignUpForm.css";
+import "./Style.css";
 import { useState } from "react";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 import { Link } from "react-router-dom";
@@ -49,7 +49,7 @@ export default function SignUpForm() {
             </svg>
             <input
               type="text"
-              placeholder="Name"
+              placeholder="Username"
               name="name"
               className="form-control"
               onChange={(e) => {
@@ -105,12 +105,12 @@ export default function SignUpForm() {
           </div>
         </div>
         <div className="submit-container">
-          <input className="btn submit" type="submit" value="Sign Up" />
           <Link to="/login">
             <button id="login-button" className="btn btn-primary submit">
               Login
             </button>
           </Link>
+          <input className="btn submit" type="submit" value="Sign Up" />
         </div>
       </form>
     </div>

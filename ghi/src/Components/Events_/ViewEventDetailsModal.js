@@ -1,34 +1,34 @@
-import { useState } from 'react'
+import { useState } from "react";
 
 function ViewEventDetailsModal(props) {
-    const [eventAttendees, setEventAttendees] = useState([]);
-    const [loading, setLoading] = useState(false);
+  const [eventAttendees, setEventAttendees] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-    const handleOpenModal = async (event, id) => {
-      event.preventDefault();
-      setLoading(true)
-      const urlEventAttendees = `${process.env.REACT_APP_API_HOST}/events/${id}/attendees`;
-      const response = await fetch(urlEventAttendees, {
-        credentials: "include",
-      });
-      const data = await response.json();
-      setEventAttendees(data);
-      setLoading(false);
-    };
+  const handleOpenModal = async (event, id) => {
+    event.preventDefault();
+      setLoading(true);
+    const urlEventAttendees = `${process.env.REACT_APP_API_HOST}/events/${id}/attendees`;
+    const response = await fetch(urlEventAttendees, {
+      credentials: "include",
+    });
+    const data = await response.json();
+    setEventAttendees(data);
+    setLoading(false);
+  };
   return (
     <>
       <button
         type="button"
         className="btn btn-primary"
         data-bs-toggle="modal"
-        data-bs-target="#eventModal"
+        data-bs-target={`#eventModal${props.event.id}`}
         onClick={(event) => handleOpenModal(event, props.event.id)}
       >
         View Details
       </button>
       <div
         className="modal fade"
-        id="eventModal"
+        id={`eventModal${props.event.id}`}
         tabIndex="-1"
         aria-labelledby="ModalLabel"
         aria-hidden="true"
@@ -46,7 +46,10 @@ function ViewEventDetailsModal(props) {
                     {props.event && (
                       <div>
                         <div>
-                          <img src={props.event.image_url} alt="Event Img" />
+                          <img
+                            src={props.event.image_url}
+                            alt="Event Img"
+                          />
                         </div>
                         <div>{props.event.title}</div>
                         <div>Location: {props.event.location}</div>

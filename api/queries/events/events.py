@@ -73,6 +73,27 @@ class EventRepository:
                 )
                 id = result.fetchone()[0]
                 old_data = event.dict()
+                result2 = db.execute(
+                    """
+                    SELECT user_id
+                    FROM group_members
+                    WHERE group_id = %s
+                    """,
+                    [group_id],
+                )
+                group_members = []
+                for result2 in db:
+                    group_members.append(result2[0])
+                for member in group_members:
+                    db.execute(
+                        """
+                        INSERT INTO event_attendees
+                            (status, user_id, event_id)
+                        VALUES
+                            (%s, %s, %s)
+                        """,
+                        ["Not Seen", member, id],
+                    )
                 return EventOut(
                     id=id, **old_data, group_id=group_id, creator_id=creator_id
                 )

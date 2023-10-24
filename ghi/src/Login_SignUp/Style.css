@@ -1,7 +1,7 @@
 .input-container {
   display: flex;
   flex-direction: column;
-  margin: 13% auto;
+  margin: 6% auto;
   width: 600px;
   background: #071952;
   padding-bottom: 30px;
@@ -82,6 +82,7 @@ div svg {
   color: #071952;
   background: #97feed;
   border-radius: 50px;
+  border-width: 0;
   font-size: 19px;
   font-weight: 700;
   cursor: pointer;
@@ -91,17 +92,53 @@ div svg {
   background: #35a29f;
   color: #071952;
   text-decoration: #071952 underline;
+  border-width: 0;
 }
 
-#login-button{
+#login-button {
   text-decoration: #97feed underline;
   color: #071952;
+  border-width: 0;
 }
 
-#login-button:hover{
+#login-button:hover {
   text-decoration: #071952 underline;
   color: #071952;
   background: #35a29f;
+  border-width: 0;
+}
+
+#signUp-button {
+  text-decoration: #97feed underline;
+  color: #071952;
+  border-color: #97feed;
+}
+#signUp-button:hover {
+  text-decoration: #071952 underline;
+  color: #071952;
+  background: #35a29f;
+}
+
+/************* Nav Bar CSS ************/
+
+.submit-login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 50px;
+  color: #97feed;
+  background: #071952;
+  border-radius: 50px;
+  font-size: 19px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.submit-login:hover {
+  background: #35a29f;
+  color: #071952;
+  text-decoration: #071952 underline;
 }
 
 /* 
