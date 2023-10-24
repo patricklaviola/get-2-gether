@@ -45,5 +45,9 @@ def get_all_groups(
 @router.get(
     "/user/{user_id}/groups", response_model=Union[Error, List[GroupOut]]
 )
-def list_groups_by_user():
-    pass
+def get_groups_by_user(
+    user_id: int,
+    repo: GroupRepository = Depends(),
+    account_data: dict = Depends(authenticator.get_current_account_data),
+):
+    return repo.get_groups_by_user(user_id)

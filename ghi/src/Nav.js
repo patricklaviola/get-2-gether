@@ -28,7 +28,13 @@ const Nav = () => {
                   <i className="bi bi-box-arrow-left"></i>
                 </NavLink>
               </button>
-            </div>
+  
+            <button className="btn btn-link">
+                <NavLink to="/users/1" className="submit-login submit-container"> 
+                    Personal Dashboard
+                </NavLink>
+            </button>
+          </div>
           </div>
         </span>
       </div>
@@ -37,3 +43,5 @@ const Nav = () => {
 };
 
 export default Nav;
+
+

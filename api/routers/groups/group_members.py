@@ -2,6 +2,7 @@ from queries.groups.group_members import (
     GroupMemberIn,
     GroupMemberOut,
     GroupMemberInfoOut,
+    FriendOut,
     GroupMemberRepository,
     Error,
 )
@@ -60,3 +61,15 @@ def delete_group_member(
     account_data: dict = Depends(authenticator.get_current_account_data),
 ) -> bool:
     return repo.delete_group_member(id)
+
+
+@router.get(
+    "/users/{user_id}/friends",
+    response_model=Union[Error, List[FriendOut]],
+)
+def get_friends_by_user(
+    user_id: int,
+    repo: GroupMemberRepository = Depends(),
+    account_data: dict = Depends(authenticator.get_current_account_data),
+):
+    return repo.get_friends_by_user(user_id)

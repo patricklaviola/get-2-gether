@@ -100,3 +100,34 @@ class GroupRepository:
         except Exception as e:
             print(e)
             return {"message": "Could not get all groups"}
+
+    def get_groups_by_user(self, user_id: int) -> Union[Error, List[GroupOut]]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        SELECT
+                        groups.id,
+                        groups.group_name,
+                        groups.creator_id
+                        FROM groups
+                        INNER JOIN
+                        group_members ON groups.id = group_members.group_id
+                        WHERE group_members.user_id = %s
+                        ORDER BY groups.id;
+                        """,
+                        [user_id],
+                    )
+                    result = []
+                    for record in db:
+                        group = GroupOut(
+                            id=record[0],
+                            group_name=record[1],
+                            creator_id=record[2],
+                        )
+                        result.append(group)
+                    return result
+        except Exception as e:
+            print(e)
+            return {"message": "Could not get groups for this user"}

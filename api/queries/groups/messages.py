@@ -28,8 +28,8 @@ class MessageUpdateOut(BaseModel):
 
 class MessageRepository:
     def create(
-            self, message: MessageIn, user_id: int, group_id: int
-            ) -> Union[MessageOut, Error]:
+        self, message: MessageIn, user_id: int, group_id: int
+    ) -> Union[MessageOut, Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -45,7 +45,7 @@ class MessageRepository:
                             message.message,
                             message.created_on,
                             user_id,
-                            group_id
+                            group_id,
                         ],
                     )
                     id = result.fetchone()[0]
@@ -60,8 +60,8 @@ class MessageRepository:
             return {"message": "Could not create message"}
 
     def update(
-            self, message_id: int, message: MessageIn
-            ) -> Union[MessageOut, Error]:
+        self, message_id: int, message: MessageIn
+    ) -> Union[MessageOut, Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -72,20 +72,14 @@ class MessageRepository:
                             , created_on = %s
                         WHERE id = %s
                         """,
-                        [
-                            message.message,
-                            message.created_on,
-                            message_id
-                        ]
+                        [message.message, message.created_on, message_id],
                     )
                     old_data = message.dict()
                     return MessageUpdateOut(id=message_id, **old_data)
         except Exception:
             return {"message": "Could not update message"}
 
-    def get(
-            self, group_id: int
-            ) -> Union[List[MessageOut], Error]:
+    def get(self, group_id: int) -> Union[List[MessageOut], Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:

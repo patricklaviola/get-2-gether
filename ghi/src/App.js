@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginForm from "./Login_SignUp/LoginForm.js";
 import SignUpForm from "./Login_SignUp/SignUpForm";
 import GroupDashboard from "./GroupDashboard.js";
+import PersonalDashboard from "./PersonalDashboard";
 
 import Nav from "./Nav";
 import GroupForm from "./GroupForm";
@@ -26,11 +27,7 @@ function App() {
               path="/groups/:id"
               element={<GroupDashboard />}
             ></Route>
-            <Route
-              exact
-              path="/groups/:id"
-              element={<GroupDashboard />}
-            ></Route>
+            <Route exact path="/users/:id" element={<PersonalDashboard />}></Route>
           </Routes>
         </AuthProvider>
       </BrowserRouter>

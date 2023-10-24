@@ -78,12 +78,13 @@ def test_get_group_member():
 
 class GetAllGroupMembersRepository:
     def get_all_group_members(self):
-        return [GroupMemberInfoOut(
-            id=7,
-            group_name="Group Name",
-            user_name="Hello World",
-            email="test@test.com",
-            user_id=4,
+        return [
+            GroupMemberInfoOut(
+                id=7,
+                group_name="Group Name",
+                user_name="Hello World",
+                email="test@test.com",
+                user_id=4,
             )
         ]
 
@@ -114,12 +115,13 @@ def test_get_all_group_members():
 
 class GetAllGroupMembersByGroupIDRepository:
     def get_group_members_list_for_group(self, group_id):
-        return [GroupMemberInfoOut(
-            id=7,
-            group_name="Group Name",
-            user_name="Hello World",
-            email="test@test.com",
-            user_id=4,
+        return [
+            GroupMemberInfoOut(
+                id=7,
+                group_name="Group Name",
+                user_name="Hello World",
+                email="test@test.com",
+                user_id=4,
             )
         ]
 

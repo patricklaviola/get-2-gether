@@ -26,6 +26,12 @@ class GroupMemberInfoOut(BaseModel):
     user_id: int
 
 
+class FriendOut(BaseModel):
+    user_name: str
+    email: str
+    user_id: int
+
+
 class GroupMemberRepository:
     def create_group_member(
         self, group_member: GroupMemberIn, user_id: int
@@ -169,3 +175,34 @@ class GroupMemberRepository:
         except Exception as e:
             print(e)
             return False
+
+    def get_friends_by_user(
+        self, user_id: int
+    ) -> Union[Error, List[FriendOut]]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        SELECT DISTINCT u.user_name, u.email, u.id AS user_id
+                        FROM group_members gm
+                        INNER JOIN
+                        group_members gm2 ON gm.group_id = gm2.group_id AND
+                        gm.user_id != gm2.user_id
+                        INNER JOIN users u ON gm2.user_id = u.id
+                        WHERE gm.user_id = %s;
+                        """,
+                        [user_id],
+                    )
+                    result = []
+                    for record in db:
+                        friend = FriendOut(
+                            user_name=record[0],
+                            email=record[1],
+                            user_id=record[2],
+                        )
+                        result.append(friend)
+                    return result
+        except Exception as e:
+            print(e)
+            return {"message": "Could not get friends of this user"}
