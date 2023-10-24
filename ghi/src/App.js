@@ -6,7 +6,6 @@ import GroupDashboard from "./GroupDashboard.js";
 import Nav from "./Nav";
 import GroupForm from "./GroupForm";
 import "./App.css";
-import CreateEventForm from "./Components/Events_/CreateEventModalForm.js";
 
 function App() {
   const domain = /https:\/\/[^/]+/;
@@ -27,7 +26,6 @@ function App() {
               element={<GroupDashboard />}
             ></Route>
             <Route exact path="/groups/:id" element={<GroupDashboard />}></Route>
-            <Route exact path="/groups/{group_id}/events" element={<CreateEventForm />}></Route>
           </Routes>
         </AuthProvider>
       </BrowserRouter>

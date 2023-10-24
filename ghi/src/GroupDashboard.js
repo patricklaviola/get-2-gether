@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import CreateEventModalForm from "./Components/Events_/CreateEventModalForm";
+import ViewEventDetailsModal from "./Components/Events_/ViewEventDetailsModal";
 // import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 
 function GroupDashboard(props) {
@@ -156,7 +157,11 @@ function GroupDashboard(props) {
           <div className="collapse" id="collapseMembers">
             <ul className="list-group list-group-flush">
               {groupMembers.map((member) => {
-                return <li className="list-group-item">{member.user_name}</li>;
+                return (
+                  <li key={member.id} className="list-group-item">
+                    {member.user_name}
+                  </li>
+                );
               })}
             </ul>
           </div>
@@ -189,9 +194,9 @@ function GroupDashboard(props) {
             <div className="col">
               <div className="">
                 <div className="row">
-                  {events.map((event) => {
+                  {events.map((event, index) => {
                     return (
-                      <div className="col gy-5">
+                      <div key={event.id} className="col gy-5">
                         <div className="card" style={{ width: "18rem" }}>
                           <img
                             src={event.image_url}
@@ -230,12 +235,15 @@ function GroupDashboard(props) {
                               Not Going
                             </a>
                           </div>
+                          <ViewEventDetailsModal event={events[index]} />
                         </div>
+                        <br />
+                        
                       </div>
                     );
                   })}
+                  <CreateEventModalForm />
                 </div>
-                <CreateEventModalForm />
               </div>
             </div>
           </div>
@@ -249,7 +257,10 @@ function GroupDashboard(props) {
                       {messages.map((m) => {
                         if (m.user_id === 1) {
                           return (
-                            <li className="d-flex justify-content-between mb-4">
+                            <li
+                              key={m.user_id.id}
+                              className="d-flex justify-content-between mb-4"
+                            >
                               <div className="card w-100">
                                 <div className="card-header d-flex justify-content-between p-3">
                                   <p className="fw-bold mb-0">{m.user_id}</p>
