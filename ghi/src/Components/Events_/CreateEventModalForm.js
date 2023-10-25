@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom";
 function CreateEventModalForm(props) {
   const groupId = useParams();
 
-
   const [formData, setFormData] = useState({
     title: "",
     location: "",

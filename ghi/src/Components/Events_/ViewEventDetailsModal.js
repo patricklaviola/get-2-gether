@@ -6,7 +6,7 @@ function ViewEventDetailsModal(props) {
 
   const handleOpenModal = async (event, id) => {
     event.preventDefault();
-      setLoading(true);
+    setLoading(true);
     const urlEventAttendees = `${process.env.REACT_APP_API_HOST}/events/${id}/attendees`;
     const response = await fetch(urlEventAttendees, {
       credentials: "include",
@@ -46,10 +46,7 @@ function ViewEventDetailsModal(props) {
                     {props.event && (
                       <div>
                         <div>
-                          <img
-                            src={props.event.image_url}
-                            alt="Event Img"
-                          />
+                          <img src={props.event.image_url} alt="Event Img" />
                         </div>
                         <div>{props.event.title}</div>
                         <div>Location: {props.event.location}</div>

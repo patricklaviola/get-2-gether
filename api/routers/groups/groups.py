@@ -43,7 +43,7 @@ def get_all_groups(
 
 
 @router.get(
-    "/user/{user_id}/groups", response_model=Union[Error, List[GroupOut]]
+    "/users/{user_id}/groups", response_model=Union[Error, List[GroupOut]]
 )
 def get_groups_by_user(
     user_id: int,
