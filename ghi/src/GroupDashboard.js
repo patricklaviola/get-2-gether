@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import CreateEventModalForm from "./Components/Events_/CreateEventModalForm";
 import ViewEventDetailsModal from "./Components/Events_/ViewEventDetailsModal";
 
 function GroupDashboard(props) {
+  const C3POIcon = require("./icons/c3po.png");
+  const stormTrooperIcon = require("./icons/stormtrooper.jpg");
   const groupId = useParams();
+  const [token, setToken] = useState("");
   const [events, setEvents] = useState([]);
   const [groupMembers, setGroupMembers] = useState([]);
   const [messages, setMessages] = useState([]);
   const [userInfo, setUserInfo] = useState({});
   const [messageDisplay, setMessageDisplay] = useState("");
+  const [groups, setGroups] = useState([]);
+  const [group, setGroup] = useState({});
 
   const handleMessageChange = (event) => {
     const value = event.target.value;
@@ -36,6 +41,21 @@ function GroupDashboard(props) {
       fetchMessages();
     }
     setMessageDisplay("");
+  };
+
+  const handleGroupMemberDelete = async (id) => {
+    const url = `${process.env.REACT_APP_API_HOST}/group_members/${id}`;
+    const fetchConfig = {
+      method: "delete",
+      credentials: "include",
+    };
+    const response2 = await fetch(url, fetchConfig);
+    if (response2.ok) {
+      const finished = await response2.json();
+      if (finished) {
+        fetchGroupMembers();
+      }
+    }
   };
 
   const handleGoingClick = async (id) => {
@@ -149,17 +169,31 @@ function GroupDashboard(props) {
     }
   };
 
-  const fetchData = async () => {
-    const url1 = `${process.env.REACT_APP_API_HOST}/groups/${groupId.id}/group_members`;
-    const url2 = `${process.env.REACT_APP_API_HOST}/groups/${groupId.id}/events`;
-    const url3 = `${process.env.REACT_APP_API_HOST}/groups/${groupId.id}/messages`;
+  const fetchUserInfo = async () => {
     const url4 = `${process.env.REACT_APP_API_HOST}/token`;
+    const response4 = await fetch(url4, { credentials: "include" });
+    if (response4.ok) {
+      const data4 = await response4.json();
+      console.log(data4);
+      setToken(data4);
+      setUserInfo(data4["account"]);
+    }
+  };
 
+  const fetchGroupMembers = async () => {
+    const url1 = `${process.env.REACT_APP_API_HOST}/groups/${groupId.id}/group_members`;
     const response1 = await fetch(url1, { credentials: "include" });
     if (response1.ok) {
       const data1 = await response1.json();
       setGroupMembers(data1);
     }
+  };
+
+  const fetchData = async () => {
+    const url2 = `${process.env.REACT_APP_API_HOST}/groups/${groupId.id}/events`;
+    const url3 = `${process.env.REACT_APP_API_HOST}/groups/${groupId.id}/messages`;
+    const url4 = `${process.env.REACT_APP_API_HOST}/groups/${groupId.id}/`;
+
     const response2 = await fetch(url2, { credentials: "include" });
     if (response2.ok) {
       const data2 = await response2.json();
@@ -174,17 +208,30 @@ function GroupDashboard(props) {
     const response4 = await fetch(url4, { credentials: "include" });
     if (response4.ok) {
       const data4 = await response4.json();
-      console.log(data4["account"]);
-      setUserInfo(data4["account"]);
+      setGroup(data4);
+    }
+
+    if (token && token.account) {
+      const url5 = `${process.env.REACT_APP_API_HOST}/users/${userInfo.id}/groups`;
+      const response5 = await fetch(url5, { credentials: "include" });
+      if (response5.ok) {
+        const data5 = await response5.json();
+        setGroups(data5);
+      }
     }
   };
+  useEffect(() => {
+    fetchUserInfo();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     fetchData();
+    fetchGroupMembers();
     let m = setInterval(fetchMessages, 2000);
     return () => clearInterval(m);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [token]);
 
   return (
     <div>
@@ -228,11 +275,25 @@ function GroupDashboard(props) {
           <div className="collapse" id="collapseMembers">
             <ul className="list-group list-group-flush">
               {groupMembers.map((member) => {
-                return (
-                  <li key={member.id} className="list-group-item">
-                    {member.user_name}
-                  </li>
-                );
+                if (userInfo.id === group.creator_id) {
+                  return (
+                    <li key={member.id} className="list-group-item">
+                      {member.user_name}
+                      <button
+                        type="button"
+                        className="btn-close"
+                        onClick={() => handleGroupMemberDelete(member.id)}
+                        aria-label="Close"
+                      ></button>
+                    </li>
+                  );
+                } else {
+                  return (
+                    <li key={member.id} className="list-group-item">
+                      {member.user_name}
+                    </li>
+                  );
+                }
               })}
             </ul>
           </div>
@@ -247,13 +308,26 @@ function GroupDashboard(props) {
           </button>
           <div className="collapse" id="collapseGroups">
             <ul className="list-group list-group-flush">
-              <li className="list-group-item">Group 1</li>
-              <li className="list-group-item">Group 2</li>
-              <li className="list-group-item">Group 3</li>
+              {groups.map((group, index) => {
+                return (
+                  <li key={index} className="list-group-item">
+                    <Link to={`/groups/${group.id}`}>{group.group_name}</Link>
+                  </li>
+                );
+              })}
             </ul>
           </div>
+          <hr className="dropdown-divider" />
+          <button className="btn" type="button">
+            <Link to={"/groups"}>Create a new Group</Link>
+          </button>
+          <hr className="dropdown-divider" />
+          <button className="btn" type="button">
+            <Link to={"/group_members"}>Add a Group Member</Link>
+          </button>
         </div>
       </div>
+      <h2>{group.group_name} Dashboard</h2>
       <div className="container">
         <div className="row">
           <div className="col-6">
@@ -368,7 +442,7 @@ function GroupDashboard(props) {
                                     </div>
                                   </div>
                                   <img
-                                    src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp"
+                                    src={C3POIcon}
                                     alt="avatar"
                                     className="rounded-circle d-flex align-self-start ms-3 shadow-1-strong"
                                     width="60"
@@ -382,7 +456,7 @@ function GroupDashboard(props) {
                                   className="d-flex justify-content-between mb-4"
                                 >
                                   <img
-                                    src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
+                                    src={stormTrooperIcon}
                                     alt="avatar"
                                     className="rounded-circle d-flex align-self-start me-3 shadow-1-strong"
                                     width="60"
