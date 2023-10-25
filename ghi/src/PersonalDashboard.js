@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import ViewEventDetailsModal from "./Components/Events_/ViewEventDetailsModal";
 
-function PersonalDashboard(props) {
+function PersonalDashboard() {
   const [token, setToken] = useState("");
   const [events, setEvents] = useState([]);
   const [groups, setGroups] = useState([]);
@@ -18,16 +18,14 @@ function PersonalDashboard(props) {
     }
   }
 
-  const handleGoingClick = async (id) => {
-    const allAttendeeUrl = `${process.env.REACT_APP_API_HOST}/events/${id}/attendees`;
-    console.log(allAttendeeUrl);
-    const groupsResponse = await fetch(allAttendeeUrl, {
+  const handleClick = async (id, status) => {
+    const attendeeUrl = `${process.env.REACT_APP_API_HOST}/events/${id}/attendees`;
+    const groupsResponse = await fetch(attendeeUrl, {
       credentials: "include",
     });
     let attendeeId = 0;
     if (groupsResponse.ok) {
       const groupsData = await groupsResponse.json();
-      console.log(groupsData);
       for (let i = 0; i < groupsData.length; i++) {
         let currAttendee = groupsData[i];
         if (currAttendee.user_id === token.id) {
@@ -38,80 +36,10 @@ function PersonalDashboard(props) {
     }
     const url = `${process.env.REACT_APP_API_HOST}/attendees/${attendeeId}`;
     let m = {
-      status: "Going",
+      status,
     };
     const fetchConfig = {
-      method: "put",
-      body: JSON.stringify(m),
-      headers: {
-        "Content-type": "application/json",
-      },
-      credentials: "include",
-    };
-    const eventsResponse = await fetch(url, fetchConfig);
-    if (eventsResponse.ok) {
-      const finished = await eventsResponse.json();
-      console.log(finished);
-    }
-  };
-  const handleMaybeClick = async (id) => {
-    const allAttendeeUrl = `${process.env.REACT_APP_API_HOST}/events/${id}/attendees`;
-    const groupsResponse = await fetch(allAttendeeUrl, {
-      credentials: "include",
-    });
-    let attendeeId = 0;
-    if (groupsResponse.ok) {
-      const groupsData = await groupsResponse.json();
-      console.log(groupsData);
-      for (let i = 0; i < groupsData.length; i++) {
-        let currAttendee = groupsData[i];
-        if (currAttendee.user_id === token.id) {
-          attendeeId = currAttendee.id;
-          break;
-        }
-      }
-    }
-    const url = `${process.env.REACT_APP_API_HOST}/attendees/${attendeeId}`;
-    let m = {
-      status: "Maybe",
-    };
-    const fetchConfig = {
-      method: "put",
-      body: JSON.stringify(m),
-      headers: {
-        "Content-type": "application/json",
-      },
-      credentials: "include",
-    };
-    const eventsResponse = await fetch(url, fetchConfig);
-    if (eventsResponse.ok) {
-      const finished = await eventsResponse.json();
-      console.log(finished);
-    }
-  };
-  const handleNotGoingClick = async (id) => {
-    const allAttendeeUrl = `${process.env.REACT_APP_API_HOST}/events/${id}/attendees`;
-    const groupsResponse = await fetch(allAttendeeUrl, {
-      credentials: "include",
-    });
-    let attendeeId = 0;
-    if (groupsResponse.ok) {
-      const groupsData = await groupsResponse.json();
-      console.log(groupsData);
-      for (let i = 0; i < groupsData.length; i++) {
-        let currAttendee = groupsData[i];
-        if (currAttendee.user_id === token.id) {
-          attendeeId = currAttendee.id;
-          break;
-        }
-      }
-    }
-    const url = `${process.env.REACT_APP_API_HOST}/attendees/${attendeeId}`;
-    let m = {
-      status: "Not Going",
-    };
-    const fetchConfig = {
-      method: "put",
+      method: "PUT",
       body: JSON.stringify(m),
       headers: {
         "Content-type": "application/json",
@@ -139,7 +67,6 @@ function PersonalDashboard(props) {
       const eventsResponse = await fetch(eventsUrl, { credentials: "include" });
       if (eventsResponse.ok) {
         const eventsData = await eventsResponse.json();
-        console.log(eventsData);
         setEvents(eventsData);
       }
       const friendsResponse = await fetch(friendsUrl, {
@@ -147,7 +74,6 @@ function PersonalDashboard(props) {
       });
       if (friendsResponse.ok) {
         const friendsData = await friendsResponse.json();
-        console.log(friendsData);
         setFriends(friendsData);
       }
     }
@@ -224,10 +150,10 @@ function PersonalDashboard(props) {
               My Friends
             </button>
             <div className="collapse" id="collapseFriends">
-              <ul className="list-friend list-friend-flush">
+              <ul className="list-group list-group-flush">
                 {friends.map((friend) => {
                   return (
-                    <li key={friend.user_name} className="list-friend-item">
+                    <li key={friend.user_name} className="list-group-item">
                       {friend.user_name}
                     </li>
                   );
@@ -254,14 +180,14 @@ function PersonalDashboard(props) {
               <div className="col">
                 <div className="">
                   <div className="row">
-                    {events.map((event, index) => {
+                    {events.map((event) => {
                       return (
                         <div key={`e-${event.id}`} className="col gy-5">
                           <div className="card" style={{ width: "18rem" }}>
                             <img
                               src={event.image_url}
                               className="card-img-top"
-                              alt="house"
+                              alt="Location"
                             />
                             <div className="card-body">
                               <h5 className="card-title">{event.title}</h5>
@@ -277,28 +203,30 @@ function PersonalDashboard(props) {
                             </ul>
                             <div className="card-body">
                               <button
-                                onClick={() => handleGoingClick(event.id)}
+                                onClick={() => handleClick(event.id, "Going")}
                                 type="button"
                                 className="card-link"
                               >
                                 Going
                               </button>
                               <button
-                                onClick={() => handleMaybeClick(event.id)}
+                                onClick={() => handleClick(event.id, "Maybe")}
                                 type="button"
                                 className="card-link"
                               >
                                 Maybe
                               </button>
                               <button
-                                onClick={() => handleNotGoingClick(event.id)}
+                                onClick={() =>
+                                  handleClick(event.id, "Not Going")
+                                }
                                 type="button"
                                 className="card-link"
                               >
                                 Not Going
                               </button>
                             </div>
-                            <ViewEventDetailsModal event={events[index]} />
+                            <ViewEventDetailsModal event={event} />
                           </div>
                         </div>
                       );
