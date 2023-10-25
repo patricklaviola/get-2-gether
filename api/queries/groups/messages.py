@@ -13,11 +13,20 @@ class MessageIn(BaseModel):
     created_on: datetime = Field(default_factory=datetime.now)
 
 
+class MessageCreateOut(BaseModel):
+    id: int
+    message: str
+    created_on: datetime = Field(default_factory=datetime.now)
+    user_id: int
+    group_id: int
+
+
 class MessageOut(BaseModel):
     id: int
     message: str
     created_on: datetime = Field(default_factory=datetime.now)
     user_id: int
+    user_name: str
     group_id: int
 
 
@@ -29,7 +38,7 @@ class MessageUpdateOut(BaseModel):
 class MessageRepository:
     def create(
         self, message: MessageIn, user_id: int, group_id: int
-    ) -> Union[MessageOut, Error]:
+    ) -> Union[MessageCreateOut, Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -49,15 +58,15 @@ class MessageRepository:
                         ],
                     )
                     id = result.fetchone()[0]
-                    return MessageOut(
+                    return MessageCreateOut(
                         id=id,
                         message=message.message,
                         created_on=message.created_on,
                         user_id=user_id,
                         group_id=group_id,
                     )
-        except Exception:
-            return {"message": "Could not create message"}
+        except Exception as e:
+            return {"message": f"Could not create message {e}"}
 
     def update(
         self, message_id: int, message: MessageIn
@@ -89,8 +98,11 @@ class MessageRepository:
                         , messages.message
                         , messages.created_on
                         , messages.user_id
+                        , users.user_name
                         , messages.group_id
                         FROM messages
+                        INNER JOIN users
+                        ON messages.user_id = users.id
                         WHERE messages.group_id = %s
                         ORDER BY messages.created_on ASC
                         """,
@@ -103,7 +115,8 @@ class MessageRepository:
                             message=record[1],
                             created_on=record[2],
                             user_id=record[3],
-                            group_id=record[4],
+                            user_name=record[4],
+                            group_id=record[5],
                         )
                         messages.append(message)
                     return messages

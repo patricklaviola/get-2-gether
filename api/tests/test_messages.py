@@ -20,6 +20,7 @@ class CreateMessageRepository:
         result = {
             "id": 1,
             "user_id": 1,
+            "user_name": "Veronica Anaya",
             "group_id": 1,
         }
         result.update(message)
@@ -42,6 +43,7 @@ def test_create_message():
         "message": "Hello world!",
         "created_on": "2023-10-18T22:14:45",
         "user_id": 1,
+        "user_name": "Veronica Anaya",
         "group_id": 1,
     }
 

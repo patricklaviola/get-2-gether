@@ -69,7 +69,8 @@ steps = [
             id SERIAL PRIMARY KEY NOT NULL,
             status TEXT NOT NULL,
             user_id INT NOT NULL REFERENCES users(id),
-            event_id INT NOT NULL REFERENCES events(id) ON DELETE CASCADE
+            event_id INT NOT NULL REFERENCES events(id) ON DELETE CASCADE,
+            UNIQUE(user_id, event_id)
         );
         """,
         # "Down" SQL statement
@@ -83,7 +84,7 @@ steps = [
         CREATE TABLE messages (
             id SERIAL PRIMARY KEY NOT NULL,
             message TEXT NOT NULL,
-            created_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            created_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             user_id INT NOT NULL REFERENCES users(id),
             group_id INT NOT NULL REFERENCES groups(id)
 

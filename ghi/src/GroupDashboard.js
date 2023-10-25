@@ -20,7 +20,6 @@ function GroupDashboard(props) {
     const url = `${process.env.REACT_APP_API_HOST}/groups/${groupId.id}/messages`;
     const m = {
       message: messageDisplay,
-      created_on: new Date().toISOString(),
     };
     const fetchConfig = {
       method: "post",
@@ -359,11 +358,9 @@ function GroupDashboard(props) {
                                         {m.user_name}
                                       </p>
                                       <p className="text-muted small mb-0">
-                                        <i className="far fa-clock"></i>{" "}
-                                        {new Date(m.created_on).toLocaleString(
-                                          "en-US",
-                                          { timeZome: "America/LosAngeles" }
-                                        )}
+                                        {new Date(
+                                          m.created_on + "-00:00"
+                                        ).toLocaleString()}
                                       </p>
                                     </div>
                                     <div className="card-body">
@@ -392,13 +389,12 @@ function GroupDashboard(props) {
                                   />
                                   <div className="card w-100">
                                     <div className="card-header d-flex justify-content-between p-3">
-                                      <p className="fw-bold mb-0">{m.id}</p>
+                                      <p className="fw-bold mb-0">{m.user_name}</p>
                                       <p className="text-muted small mb-0">
                                         <i className="far fa-clock"></i>{" "}
-                                        {new Date(m.created_on).toLocaleString(
-                                          "en-US",
-                                          { timeZome: "America/LosAngeles" }
-                                        )}
+                                        {new Date(
+                                          m.created_on + "-00:00"
+                                        ).toLocaleString()}
                                       </p>
                                     </div>
                                     <div className="card-body">

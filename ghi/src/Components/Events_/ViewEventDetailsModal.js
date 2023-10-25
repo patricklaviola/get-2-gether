@@ -52,10 +52,7 @@ function ViewEventDetailsModal(props) {
                         <div>Location: {props.event.location}</div>
                         <div>
                           Date/Time:
-                          {new Date(props.event.event_time_date).toLocaleString(
-                            "en-US",
-                            { timeZone: "UTC" }
-                          )}
+                          {new Date(props.event.event_time_date).toLocaleString()}
                         </div>
                         <div>Description: {props.event.description}</div>
                       </div>
