@@ -1,38 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
 function AddGroupMemberForm() {
-  const [group_id, setGroupID] = useState('');
+  const { id } = useParams();
   const [user_id, setUserID] = useState('');
   const [users, setUsers] = useState([]);
-  const [groups, setGroups] = useState([]);
-  const [token, setToken] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-
-  async function getToken() {
-    const url = `${process.env.REACT_APP_API_HOST}/token`;
-    const response = await fetch(url, { credentials: 'include' });
-
-    if (response.ok) {
-      const data = await response.json();
-      setToken(data);
-    }
-  }
-
-  async function getGroups() {
-    const url = `${process.env.REACT_APP_API_HOST}/groups`;
-    const response = await fetch(url, { credentials: 'include' });
-
-    if (response.ok) {
-      const data = await response.json();
-
-      if (token && token.account) {
-        const filteredGroups = data.filter(group => group.creator_id === token.account.id);
-        setGroups(filteredGroups);
-        console.log('Filtered Groups:', filteredGroups);
-      }
-    }
-  }
 
   async function getUsers() {
     const url = `${process.env.REACT_APP_API_HOST}/accounts`;
@@ -45,20 +19,13 @@ function AddGroupMemberForm() {
   }
 
   useEffect(() => {
-    getToken();
-  }, []);
-
-  useEffect(() => {
     getUsers();
-    getGroups();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token]);
-
+  }, []);
 
   async function handleSubmit(event) {
     event.preventDefault();
     const data = {
-      group_id: group_id,
+      group_id: id,
       user_id: user_id,
     };
 
@@ -76,9 +43,8 @@ function AddGroupMemberForm() {
       const response = await fetch(groupMembersUrl, fetchConfig);
 
       if (response.ok) {
-        setGroupID('');
         setUserID('');
-        setSuccessMessage('User added to the group successfully.');
+        setSuccessMessage('User added to the group successfully!');
 
         setTimeout(() => setSuccessMessage(''), 5000);
       } else {
@@ -88,14 +54,8 @@ function AddGroupMemberForm() {
     } catch (error) {
       setErrorMessage('Error: User is already in the group.');
       setTimeout(() => setErrorMessage(''), 5000);
-      setGroupID('');
       setUserID('');
     }
-  }
-
-  function handleChangeGroupID(event) {
-    const { value } = event.target;
-    setGroupID(value);
   }
 
   function handleChangeUserID(event) {
@@ -104,50 +64,70 @@ function AddGroupMemberForm() {
   }
 
   return (
-    <div className="row">
-      <div className="offset-3 col-6">
-        <div className="shadow p-4 mt-4">
-          <h1>Add a Group Member</h1>
-          <form onSubmit={handleSubmit} id="create-group-form">
-            <div className="mb-3">
-              <select
-                value={group_id}
-                onChange={handleChangeGroupID}
-                required
-                name="group_id"
-                id="group_id"
-                className="form-select"
-              >
-                <option value="">Choose a Group</option>
-                {groups && groups.map(group => (
-                  <option key={group.id} value={group.id}>
-                    {group.group_name}
-                  </option>
-                ))}
-              </select>
-              <select
-                value={user_id}
-                onChange={handleChangeUserID}
-                required
-                name="user_id"
-                id="user_id"
-                className="form-select"
-              >
-                <option value="">Add Member</option>
-                {users && users.map(user => (
-                  <option key={user.id} value={user.id}>
-                    {user.user_name}
-                  </option>
-                ))}
-              </select>
+    <>
+      <button
+        type="button"
+        className="btn btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#GroupModal"
+      >
+        Add Group Member
+      </button>
+      <div
+        className="modal fade"
+        id="GroupModal"
+        tabIndex="-1"
+        aria-labelledby="ModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="ModalLabel">
+                Add Group Member
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
             </div>
-            {errorMessage && <p className="text-danger">{errorMessage}</p>}
-            {successMessage && <p className="text-success">{successMessage}</p>}
-            <button className="btn btn-primary">Add to Group</button>
-          </form>
+            <form onSubmit={handleSubmit} id="add-group-member-form">
+              <div className="modal-body">
+                <select
+                  value={user_id}
+                  onChange={handleChangeUserID}
+                  required
+                  name="user_id"
+                  id="user_id"
+                  className="form-select"
+                >
+                  <option value="">Select User</option>
+                  {users &&
+                    users.map((user) => (
+                      <option key={user.id} value={user.id}>
+                        {user.user_name}
+                      </option>
+                    ))}
+                </select>
+              </div>
+              {errorMessage && <p className="text-danger">{errorMessage}</p>}
+              {successMessage && <p className="text-success">{successMessage}</p>}
+              <div className="modal-footer">
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  data-bs-dismiss="modal"
+                >
+                  Add to Group
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
