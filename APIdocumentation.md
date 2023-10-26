@@ -1,952 +1,778 @@
-<!----------- ACCOUNT ----------->
+## Account Endpoints
+<details><summary>Create Account (Sign Up)</summary>
 
-### Create Account (Sign Up)
+  - Endpoint path: /api/accounts
+  - Endpoint method: POST
 
-- Endpoint path: /token
-- Endpoint method: POST
-
-- Request shape (form):
-
-  - user_name: string
-  - email: string
-  - password: string
-
-- Response: User information and token
-
-- Response shape (JSON):
-  ```json
-  {
-    "account": {
-      "id": int,
-      "user_name": string,
-      "email": string
+  - Request shape (JSON):
+    ```json
+    {
+      "user_name": "string",
+      "email": "string",
+      "password": "string"
     }
-  }
-  ```
+    ```
+  - Response: Creates new user account
 
-### User Log in (Log In)
+  - Response shape (JSON):
+    ```json
+    {
+      "access_token": "string",
+      "token_type": "string",
+      "account": {
+        "id": 0,
+        "user_name": "string",
+        "email": "string"
+      }
+    }
+    ```
+</details>
 
-- Endpoint path: /token
-- Endpoint method: POST
+<details><summary>Get Token</summary>
 
-- Request shape (form):
+  - Endpoint path: /token
+  - Endpoint method: GET
 
-  - email: string
-  - password: string
+  - Headers:
+    - Authorization: Bearer token
 
-- Response: Account information and a token
-- Response shape (JSON):
-  ```json
-  {
-    "account": {
-      «key»: type»,
-    },
-    "token": string
-  }
-  ```
+  - Response: Returns access token
 
-### Log a User Out (Log Out)
+  - Response shape (JSON):
+    ```json
+    {
+      "access_token": "string",
+      "token_type": "Bearer",
+      "account": {
+        "id": int,
+        "user_name": "string",
+        "email": "string"
+      }
+    }
+    ```
+</details>
 
-- Endpoint path: /token
-- Endpoint method: DELETE
+<details><summary>User Log In (Login)</summary>
 
-- Headers:
+  - Endpoint path: /token
+  - Endpoint method: POST
 
-  - Authorization: Bearer token
+  - Request shape (form):
+    - username: string
+    - password: string
 
-- Response: Always true
-- Response shape (JSON):
-  ```json
-  true
-  ```
+  - Response: Account information and a token
 
-<!----------- Messages ----------->
+  - Response shape (JSON):
+    ```json
+      {
+        "account": {
+          «key»: type»,
+        },
+        "token": string
+      }
+    ```
+</details>
 
-### Create a message
+<details><summary>Log a User Out (Logout)</summary>
 
-- Endpoint path: /groups/{group_id}/messages
-- Endpoint method: POST
+  - Endpoint path: /token
+  - Endpoint method: DELETE
 
-- Headers:
+  - Headers:
+    - Authorization: Bearer token
 
-  - Authorization: Bearer token
+  - Response: Always true
 
-- Request body:
-  ```json
-  {
-      "message": string,
-  }
-  ```
-- Response: An indication of success or failure
+  - Response shape (JSON):
+    ```json
+      true
+    ```
+</details>
 
-- Response shape (JSON):
-  ```json
-  {
+<details><summary>Get All Accounts</summary>
+
+  - Endpoint path: /accounts
+  - Endpoint method: GET
+
+  - Headers:
+    - Authorization: Bearer token
+
+  - Response: A list of all user accounts
+
+  - Response shape (JSON):
+
+    ```json
+    [
+      {
+        "id": int,
+        "user_name": "string",
+        "email": "string"
+      }
+    ]
+    ```
+
+</details>
+
+## Messages Endpoints
+<details><summary>Create Message</summary>
+
+  - Endpoint path: /groups/{group_id}/messages
+  - Endpoint method: POST
+  - Query parameters:
+    - group_id: needed to create a message for a specific group
+
+  - Headers:
+    - Authorization: Bearer token
+
+  - Request body:
+    ```json
+    {
+      "message": "string",
+      "created_on": "YYYY-MM-DDTHH:MM:SS",
+    }
+    ```
+  - Response: Creates new message and returns message details
+
+  - Response shape (JSON):
+    ```json
+    {
       "id": int,
-      "message": string,
+      "message": "string",
       "created_on": "YYYY-MM-DDTHH:MM:SS",
       "user_id": int,
+      "user_name": "string",
       "group_id": int,
-  }
-  ```
-
-### Display/get list of messages for the group, display in chronological order
-
-- Endpoint path: /groups/{group_id}/messages
-- Endpoint method: GET
-
-- Headers:
-
-  - Authorization: Bearer token
-
-- Response: A list of messages for a given group
-
-- Response shape (JSON):
-
-  ```json
-  {
-
-    { "messages": [
-        {
-          "id": int,
-          "message": string,
-          "created_on": "YYYY-MM-DDTHH:MM:SS",
-          "user_id": int,
-          "group_id": int,
-        }
-        ]
     }
+    ```
+</details>
 
-  }
-  ```
+<details><summary>Get Messages By Group ID</summary>
 
-  ### Updated message
+  - Endpoint path: /groups/{group_id}/messages
+  - Endpoint method: GET
+  - Query parameters:
+    - group_id: needed to retrieve messages for a specific group
 
-- Endpoint path: /groups/{group_id}/messages
-- Endpoint method: PUT
+  - Headers:
+    - Authorization: Bearer token
 
-- Headers:
+  - Response: A list of messages for a given group
 
-  - Authorization: Bearer token
+  - Response shape (JSON):
 
-- Response: Update a message by message_id
-
-- Response shape (JSON):
-
-  ```json
-  {
-  "message": string,
-  "created_on": "YYYY-MM-DDTHH:MM:SS",
-  }
-  ```
-
-  ### Delete
-
-- Endpoint path: /messages/{message_id}
-- Endpoint method: DELETE
-
-- Headers:
-
-  - Authorization: Bearer token
-
-- Response: Delete a message by message_id
-
-- Response shape (JSON):
-
-  ```json
-  {
-    true
-  }
-  ```
-
-<!----------- GROUPS ----------->
-<!-- Veronica -->
-
-### CREATE A GROUP
-
-- Endpoint path: /groups
-- Endpoint method: POST
-
-- Headers:
-
-  - Authorization: Bearer token
-
-- Request shape (JSON):
-  ```json
-  {
-      “group_name”: string,
-  }
-  ```
-- Response: Successfully created group
-
-- Response shape (JSON):
-  ```json
+    ```json
+    [
       {
-          “id”: int,
-          “group_name”: string,
-          “creator_id”: int
-      }
-  ```
-
-### GET LIST OF ALL GROUPS
-
-- Endpoint path: /groups
-- Endpoint method: GET
-
-- Headers:
-
-  - Authorization: Bearer token
-
-- Response: List of all groups
-
-- Response shape (JSON):
-  ```json
-   {
-       “Groups”: [
-       {
-           “id”: int,
-           “group_name”: string,
-       }
-       ]
-   }
-  ```
-
-### GET LIST OF GROUPS BY USER
-
-- Endpoint path: /user/{user_id}/groups
-- Endpoint method: GET
-
-- Headers:
-
-  - Authorization: Bearer token
-
-- Response: List of groups by user
-
-- Response shape (JSON):
-  ```json
-   {
-       “Groups”: [
-       {
-           “id”: int,
-           “group_name”: string,
-       }
-       ]
-   }
-  ```
-
-### VIEW GROUP DETAILS
-
-- Endpoint path: /groups/{group_id}
-- Endpoint method: GET
-
-- Headers:
-
-  - Authorization: Bearer token
-
-- Response: Group details
-
-- Response shape (JSON):
-  ```json
-  {
-      “id”: int,
-      “group_name”: string,
-  }
-  ```
-
-### DELETE GROUP
-
-- Endpoint path: /groups/{group_id}
-- Endpoint method: DELETE
-
-- Headers:
-
-  - Authorization: Bearer token
-
-- Response: Successfully deleted member from group
-
-- Response shape (JSON):
-  ```json
-      {
-          “Message”: “Successfully deleted group”
-      }
-  ```
-
-<!----------- GROUP MEMBERS ----------->
-
-### GET LIST OF GROUP MEMBERS
-
-- Endpoint path: /groups/{group_id}/group_members    
-- Endpoint method: GET
-
-- Headers:
-
-  - Authorization: Bearer token
-
-- Response: Group members
-
-- Response shape (JSON):
-  ```json
-  {
-      "member_id": int,
-      "group_id": int,
-      "user" : [
         "id": int,
-        "user_name": int,
-        "email": string,
-      ]
-  }
-  ```
+        "message": "string",
+        "created_on": "YYYY-MM-DDTHH:MM:SS",
+        "user_id": int,
+        "user_name": "string",
+        "group_id": int,
+      }
+    ]
+    ```
+</details>
 
-### ADD MEMBER TO GROUP
+<details><summary>Update Message</summary>
 
-- Endpoint path: /group_members
-- Endpoint method: POST
+  - Endpoint path: /messages/{message_id}
+  - Endpoint method: PUT
+  - Query parameters:
+    - message_id: needed to update a specific message
 
-- Headers:
+  - Headers:
+    - Authorization: Bearer token
 
-  - Authorization: Bearer token
+  - Request shape (JSON):
+    ```json
+    {
+      "message": "string",
+      "created_on": "YYYY-MM-DDTHH:MM:SS"
+    }
+    ```
 
-- Request shape (JSON):
-  ```json
-  {
-    "group_id": int,
-    "user_id": int
-  }
-  ```
-- Response: Successfully added member to group
+  - Response: Update a message by message_id
 
-- Response shape (JSON):
-  ```json
-  {
-    "id": int,
-    "group_id": int,
-    "user_id": int
-  }
-  ```
+  - Response shape (JSON):
 
-### GET A GROUP MEMBER
+    ```json
+    {
+      "message": "string",
+      "created_on": "YYYY-MM-DDTHH:MM:SS",
+    }
+    ```
+</details>
 
-- Endpoint path: /group_members/{id}
-- Endpoint method: GET
+<details><summary>Delete Message</summary>
 
-- Headers:
+  - Endpoint path: /messages/{message_id}
+  - Endpoint method: DELETE
+  - Query parameters:
+    - message_id: needed to delete a specific message
 
-  - Authorization: Bearer token
+  - Headers:
+    - Authorization: Bearer token
 
-- Request shape (JSON):
-  ```json
-  {
-    "id": int
-  }
-  ```
-- Response: Successfully returns a group member
+  - Response: Delete a message by message_id
 
-- Response shape (JSON):
-  ```json
-  {
-    "id": int,
-    "group_name": str,
-    "user_name": str,
-    "email": str,
-    "user_id": int
-  }
-  ```
-
-### GET LIST OF ALL GROUP MEMBERS
-
-- Endpoint path: /group_members
-- Endpoint method: GET
-
-- Headers:
-
-  - Authorization: Bearer token
-
-- Response: Returns a list of all group members
-
-- Response shape (JSON):
-  ```json
-  {
-    "id": int,
-    "group_name": str,
-    "user_name": str,
-    "email": str,
-    "user_id": int
-  }
-  ```
-
-### GET LIST OF GROUP MEMBERS FOR SPECIFIC GROUP
-
-- Endpoint path: /groups/{group_id}/group_members
-- Endpoint method: GET
-
-- Headers:
-
-  - Authorization: Bearer token
-
-- Request shape (JSON):
+  - Response shape (JSON):
 
   ```json
-  {
-    "group_id": int
-  }
+    {
+      true
+    }
   ```
+</details>
 
-- Response: Returns a list of all group members in a specific group
+## Groups Endpoints
+<details><summary>Create Group</summary>
 
-- Response shape (JSON):
-  ```json
-  {
-    "id": int,
-    "group_name": str,
-    "user_name": str,
-    "email": str,
-    "user_id": int
-  }
-  ```
+  - Endpoint path: /groups
+  - Endpoint method: POST
 
-### DELETE MEMBER FROM GROUP
+  - Headers:
+    - Authorization: Bearer token
 
-- Endpoint path: /group_members/{id}
-- Endpoint method: DELETE
+  - Request shape (JSON):
+    ```json
+    {
+      "group_name": "string"
+    }
+    ```
 
-- Headers:
+  - Response: Successfully creates a new group
 
-  - Authorization: Bearer token
+  - Response shape (JSON):
+    ```json
+    {
+      "id": int,
+      "group_name": "string",
+      "creator_id": int
+    }
+    ```
+</details>
 
-- Request shape (JSON):
+<details><summary>Get All Groups</summary>
 
-  ```json
-  {
-    "id": int
-  }
-  ```
+  - Endpoint path: /groups
+  - Endpoint method: GET
 
-- Response: Successfully deleted member from group
+  - Headers:
+    - Authorization: Bearer token
 
-- Response shape (JSON):
-  ```json
-  {
-    “Message”: “Successfully deleted friend from group”
-  }
-  ```
+  - Response: List of all groups
 
-<!----------- EVENTS ----------->
+  - Response shape (JSON):
+    ```json
+    [
+      {
+        "id": int,
+        "group_name": "string",
+        "creator_id": int
+      }
+    ]
+    ```
+</details>
 
-### Create an Event
+<details><summary>Get Groups By User</summary>
 
-- Endpoint path: /groups/{group_id}/events
-- Endpoint method: POST
+  - Endpoint path: /user/{user_id}/groups
+  - Endpoint method: GET
+  - Query parameters:
+    - user_id: directs path to a specific users groups
 
-- Headers:
+  - Headers:
+    - Authorization: Bearer token
 
-  - Authorization: Bearer token
+  - Response: List of groups by user
 
-- Request shape (JSON):
-  ```json
-  {
-    "title": "string",
-    "location": "string",
-    "image_url": "string",
-    "event_time_date": "2023-10-16T18:36:32.681Z",
-    "description": "string"
-  }
-  ```
-- Response: JSON Message indicating successfull event creation
+  - Response shape (JSON):
+    ```json
+    [
+      {
+        "id": int,
+        "group_name": "string",
+        "creator_id": int
+      }
+    ]
+    ```
+</details>
 
-- Response shape (JSON):
-  ```json
-  {
-    "string"
-  }
-  ```
+<details><summary>Get Group</summary>
 
-### Update an Event
+  - Endpoint path: /groups/{group_id}
+  - Endpoint method: GET
+  - Query parameters:
+    - group_id: directs path to specific group
 
-- Endpoint path: /events/{event_id}
-- Endpoint method: PUT
+  - Headers:
+    - Authorization: Bearer token
 
-- Headers:
+  - Response: Group details
 
-  - Authorization: Bearer token
+  - Response shape (JSON):
+    ```json
+    {
+      "id": int,
+      "group_name": "string",
+      "creator_id": int
+    }
+    ```
+</details>
 
-- Request shape (JSON):
-  ```json
-  {
-    "title": "string",
-    "location": "string",
-    "image_url": "string",
-    "event_time_date": "2023-10-16T18:38:05.877Z",
-    "description": "string"
-  }
-  ```
-- Response: Updated event detail with changed information reflected
+<details><summary>Delete Group</summary>
 
-- Response shape (JSON):
-  ```json
-  {
-    "id": "int",
-    "title": "string",
-    "location": "string",
-    "image_url": "string",
-    "event_time_date": "2023-10-16T18:38:05.878Z",
-    "description": "string",
-    "group_id": "int",
-    "creator_id": "int"
-  }
-  ```
+  - Endpoint path: /groups/{group_id}
+  - Endpoint method: DELETE
+  - Query parameters:
+    - group_id: needed to delete specific group
 
-### Delete an Event
+  - Headers:
+    - Authorization: Bearer token
 
-- Endpoint path: /events/{event_id}
-- Endpoint method: DELETE
+  - Response: Successfully deletes group
 
-- Headers:
+  - Response shape (JSON):
+    ```json
+    true
+    ```
+</details>
 
-  - Authorization: Bearer token
+## Group Members Endpoints
+<details><summary>Get All Group Members</summary>
 
-- Response: Confirmation that selected event has been deleted
+  - Endpoint path: /group_members
+  - Endpoint method: GET
 
-- Response shape (JSON):
-  ```json
-  true
-  ```
+  - Headers:
+    - Authorization: Bearer token
 
-### Get Detail of Event
+  - Response: List of all group members
 
-- Endpoint path: /events/{event_id}
-- Endpoint method: GET
+  - Response shape (JSON):
+    ```json
+    [
+      {
+        "id": int,
+        "group_name": "string",
+        "user_name": "string",
+        "email": "string",
+        "user_id": int,
+        "group_id": int
+      }
+    ]
+    ```
+</details>
 
-- Headers:
+<details><summary>Create Group Member</summary>
 
-  - Authorization: Bearer token
+  - Endpoint path: /group_members
+  - Endpoint method: POST
 
-- Response: Details of selected event
+  - Headers:
+    - Authorization: Bearer token
 
-- Response shape (JSON):
-  ```json
-  {
-    "id": "int",
-    "title": "string",
-    "location": "string",
-    "image_url": "string",
-    "event_time_date": "2023-10-16T18:39:45.228Z",
-    "description": "string",
-    "group_id": "int",
-    "creator_id": "int"
-  }
-  ```
+  - Request shape (JSON):
+    ```json
+    {
+      "group_id": int,
+      "user_id": int
+    }
+    ```
+  - Response: Adds a user to a group
 
-### Get List of Events for a Group
+  - Response shape (JSON):
+    ```json
+    {
+      "id": int,
+      "group_id": int,
+      "user_id": int
+    }
+    ```
+</details>
 
-- Endpoint path: /groups/{group_id}/events
-- Endpoint method: GET
+<details><summary>Get Group Member</summary>
 
-- Headers:
+  - Endpoint path: /group_members/{id}
+  - Endpoint method: GET
 
-  - Authorization: Bearer token
+  - Headers:
+    - Authorization: Bearer token
+  - Query parameters:
+    - id: needed to return a specific group member
 
-- Response: List of events associated with a specific group
+  - Response: Returns a group member
 
-- Response shape (JSON):
-  ```json
-  [
+  - Response shape (JSON):
+    ```json
+    {
+      "id": int,
+      "group_name": "sting",
+      "user_name": "string",
+      "email": "string",
+      "user_id": int,
+      "group_id": int
+    }
+    ```
+</details>
+
+<details><summary>Get Group Members List For Group</summary>
+
+  - Endpoint path: /groups/{group_id}/group_members
+  - Endpoint method: GET
+
+  - Headers:
+    - Authorization: Bearer token
+  - Query parameters:
+    - group_id: needed to fetch a list of group members for a specific group
+
+  - Response: Returns a list of all group members in a specific group
+
+  - Response shape (JSON):
+    ```json
+    [
+      {
+        "id": int,
+        "group_name": str,
+        "user_name": str,
+        "email": str,
+        "user_id": int,
+        "group_id": int
+      }
+    ]
+    ```
+</details>
+
+<details><summary>Get Friends By User</summary>
+
+
+  - Endpoint path: /users/{user_id}/friends
+  - Endpoint method: GET
+  - Query parameter:
+    - user_id: needed to return a list of friends for a specific user
+
+  - Headers:
+    - Authorization: Bearer token
+
+  - Response: Returns a list of friends for a specific user
+
+  - Response shape (JSON):
+    ```json
+    [
+      {
+        "user_name": "string",
+        "email": "string",
+        "user_id": int
+      }
+    ]
+    ```
+</details>
+
+<details><summary>Delete Group Member</summary>
+
+  - Endpoint path: /group_members/{id}
+  - Endpoint method: DELETE
+
+  - Headers:
+    - Authorization: Bearer token
+  - Query parameters:
+    - id: group member id needed to delete specific group member
+
+  - Response: Successfully deletes a specific group member
+
+  - Response shape (JSON):
+    ```json
+    true
+    ```
+</details>
+
+## Events Endpoints
+<details><summary>Create Event</summary>
+
+  - Endpoint path: /groups/{group_id}/events
+  - Endpoint method: POST
+  - Query parameters:
+    - group_id: needed to create an event for a specific group
+
+  - Headers:
+    - Authorization: Bearer token
+
+  - Request shape (JSON):
+    ```json
+    {
+      "title": "string",
+      "location": "string",
+      "image_url": "string",
+      "event_time_date": "2023-10-16T18:36:32.681Z",
+      "description": "string"
+    }
+    ```
+
+  - Response: JSON Message indicating successfull event creation
+
+  - Response shape (JSON):
+    ```json
+    {
+      "id": int,
+      "title": "string",
+      "location": "string",
+      "image_url": "string",
+      "event_time_date": "2023-10-26T18:53:54.574000+00:00",
+      "description": "string",
+      "group_id": int,
+      "creator_id": int
+    }
+    ```
+</details>
+
+<details><summary>Update Event</summary>
+
+  - Endpoint path: /events/{event_id}
+  - Endpoint method: PUT
+  - Query parameters:
+    - event_id: needed to update a specific event
+
+  - Headers:
+    - Authorization: Bearer token
+
+  - Request shape (JSON):
+    ```json
+    {
+      "title": "string",
+      "location": "string",
+      "image_url": "string",
+      "event_time_date": "2023-10-16T18:38:05.877Z",
+      "description": "string"
+    }
+    ```
+  - Response: Updated event detail with changed information reflected
+
+  - Response shape (JSON):
+    ```json
     {
       "id": "int",
       "title": "string",
       "location": "string",
       "image_url": "string",
-      "event_time_date": "2023-10-16T17:43:02.283000",
+      "event_time_date": "2023-10-16T18:38:05.878Z",
       "description": "string",
       "group_id": "int",
       "creator_id": "int"
-    },
-    ...
-  ]
-  ```
+    }
+    ```
+</details>
 
-### Get List of Events for a Specific User
+<details><summary>Get Event Details</summary>
 
-- Endpoint path: /users/{user_id}/events
-- Endpoint method: GET
+  - Endpoint path: /events/{event_id}
+  - Endpoint method: GET
+  - Query parameters:
+    - event_id: needed to return details for a specific event
 
-- Headers:
+  - Headers:
+    - Authorization: Bearer token
 
-  - Authorization: Bearer token
+  - Response: Details of selected event
 
-- Response: List of events associated with a specific User
-
-- Response shape (JSON):
-  ```json
-  [
+  - Response shape (JSON):
+    ```json
     {
-      "id": "int",
-      "title": "Event 1 (updated)",
+      "id": int,
+      "title": "string",
       "location": "string",
       "image_url": "string",
-      "event_time_date": "2023-10-16T17:43:02.283000",
+      "event_time_date": "2023-10-16T18:39:45.228Z",
       "description": "string",
-      "group_id": "int",
-      "creator_id": "int",
-      "status": "string"
-    },
-    ...
-  ]
-  ```
+      "group_id": int,
+      "creator_id": int
+    }
+    ```
+</details>
 
-<!----------- EVENT ATTENDANCE ----------->
+<details><summary>Get All Events By Group</summary>
 
-### Get List of Attendees for an Event
+  - Endpoint path: /groups/{group_id}/events
+  - Endpoint method: GET
+  - Query parameters:
+    - group_id: needed to return a list of events for a specific group
 
-- Endpoint path: /events/{event_id}/attendees
-- Endpoint method: GET
+  - Headers:
+    - Authorization: Bearer token
 
-- Headers:
+  - Response: List of events associated with a specific group
 
-  - Authorization: Bearer token
-
-- Response: Returned JSON that has a list of event attendents with the users name, ordered by their status, i.e. "going" vs "not going" vs "not seen"
-
-- Response shape (JSON):
-  ```json
-  [
-    {
-      "id": "int",
-      "status": "string",
-      "user_id": "int",
-      "event_id": "int",
-      "user_name": "string"
-    }, ...
-  ]
-  ```
-
-### Get List of all Attendees
-
-- Endpoint path: /attendees
-- Endpoint method: GET
-
-- Headers:
-
-  - Authorization: Bearer token
-
-- Response: Returned JSON that has a list of event attendents
-
-- Response shape (JSON):
-  ```json
-  [
-    {
-      "id": "int",
-      "status": "string",
-      "user_id": "int",
-      "event_id": "int",
-      "user_name": "string"
-    }, ...
-  ]
-  ```
-
-### Create an Attendance
-
-- Endpoint path: /attendees
-- Endpoint method: POST
-
-- Headers:
-
-  - Authorization: Bearer token
-
-- Request shape (JSON):
-  ```json
-  {
-    "event_id": "int"
-  }
-  ```
-- Response: Returned JSON that has information for specific event with: event and user ids, and a default user event status that is "Not Seen"
-
-- Response shape (JSON):
-  ```json
-  {
-    "id": "int",
-    "status": "Not Seen",
-    "user_id": "int",
-    "event_id": "int"
-  }
-  ```
-
-### Update an Event Attendance
-
-- Endpoint path: /attendees/{attendee_id}
-- Endpoint method: PUT
-
-- Headers:
-
-  - Authorization: Bearer token
-
-- Request shape (JSON):
-  ```json
-  {
-    "status": "Going/Not Going/Maybe"
-  }
-  ```
-- Response: Updated event attendance detail with changed status information reflected
-
-- Response shape (JSON):
-  ```json
-  {
-    "id": "int",
-    "status": "string",
-    "user_id": "int",
-    "event_id": "int"
-  }
-  ```
-
-<!-- PATRICK  - Movies, ratings, “want to see”  -->
-
-<!-- MOVIES -->
-
-### Create a New Movie in a Group
-
-- Endpoint path: /groups/{group_id}/movies/
-- Endpoint method: POST
-- Headers:
-  - Authorization: Bearer token
-- Request shape (JSON):
-  ```json
-  {
-    "title": "string",
-    "image_url": "string",
-    "description": "string",
-    "release_date": "YYYY-MM-DD"
-  }
-  ```
-- Response: Movie successfully created
-- Response shape (JSON):
-  ```json
-  {
-    "movie_id": "int",
-    "group_id": "int",
-    "title": "string",
-    "image_url": "string",
-    "description": "string",
-    "release_date": "YYYY-MM-DD",
-    "created_on": "YYYY-MM-DDTHH:MM:SS"
-  }
-  ```
-
-### Delete a Movie in a Group
-
-- Endpoint path: /groups/{group_id}/movies/{movie_id}
-- Endpoint method: DELETE
-- Headers:
-  - Authorization: Bearer token
-- Response: Movie successfully deleted
-- Response shape (JSON):
-  ```json
-  {
-    "message": "Movie deleted successfully"
-  }
-  ```
-
-### Update Movie Details in a Group
-
-- Endpoint path: /groups/{group_id}/movies/{movie_id}
-- Endpoint method: PUT
-- Headers:
-  - Authorization: Bearer token
-- Request shape (JSON):
-  ```json
-  {
-    "title": "string",
-    "image_url": "string",
-    "description": "string",
-    "release_date": "YYYY-MM-DD"
-  }
-  ```
-- Response: Movie successfully updated
-- Response shape (JSON):
-  ```json
-  {
-    "movie_id": "int",
-    "group_id": "int",
-    "title": "string",
-    "image_url": "string",
-    "description": "string",
-    "release_date": "YYYY-MM-DD",
-    "created_on": "YYYY-MM-DDTHH:MM:SS"
-  }
-  ```
-
-### Get List of All Movies in a Group
-
-- Endpoint path: /groups/{group_id}/movies
-- Endpoint method: GET
-- Query parameters:
-  - title: the title of the Movie to search for
-- Headers:
-  - Authorization: Bearer token
-- Response: List of all movies in the group
-- Response shape (JSON):
-  ```json
-  {
-      "movies": [
-          {
-              "movie_id": "int",
-              "group_id": "int",
-              "title": "string",
-              "image_url": "string",
-              "description": "string",
-              "release_date": "YYYY-MM-DD",
-              "created_on": "YYYY-MM-DDTHH:MM:SS"
-          },
-          ...
-      ]
-  }
-  ```
-
-### Search Movies in a Group
-
-- Endpoint path: /groups/{group_id}/movies/search
-- Endpoint method: GET
-- Query parameters:
-- title: search term
-- Headers:
-- Authorization: Bearer token
-- Response shape (JSON):
-  ```json
-  {
-    "movies": [
+  - Response shape (JSON):
+    ```json
+    [
       {
-          "movie_id": "int",
-          "group_id": "int",
-          "title": "string",
-          "image_url": "string",
-          "description": "string",
-          "release_date": "YYYY-MM-DD",
-          "created_on": "YYYY-MM-DDTHH:MM:SS"
-      },
-      ...
-      ]
-  }
-  ```
+        "id": int,
+        "title": "string",
+        "location": "string",
+        "image_url": "string",
+        "event_time_date": "2023-10-16T17:43:02.283000",
+        "description": "string",
+        "group_id": int,
+        "creator_id": int
+      }
+    ]
+    ```
+</details>
 
-### Get Details of a Specific Movie in a Group
+<details><summary>Get All Events By User</summary>
 
-- Endpoint path: /groups/{group_id}/movies/{movie_id}
-- Endpoint method: GET
-- Headers:
-  - Authorization: Bearer token
-- Response: Details of the movie
-- Response shape (JSON):
-  ```json
-  {
-    "movie_id": "int",
-    "group_id": "int",
-    "title": "string",
-    "image_url": "string",
-    "description": "string",
-    "release_date": "YYYY-MM-DD",
-    "created_on": "YYYY-MM-DDTHH:MM:SS"
-  }
-  ```
+  - Endpoint path: /users/{user_id}/events
+  - Endpoint method: GET
+  - Query parameters:
+    - user_id: needed to return a list of events for a specific user
 
-<!-- RATINGS -->
+  - Headers:
+    - Authorization: Bearer token
 
-### Create a Rating for a Movie in a Group
+  - Response: List of events associated with a specific user
 
-- Endpoint path: /groups/{group_id}/movies/{movie_id}/ratings
-- Endpoint method: POST
-- Headers:
-  - Authorization: Bearer token
-- Request shape (JSON):
-  ```json
-  {
-    "rating": "int"
-  }
-  ```
-- Response: Rating successfully created
-- Response shape (JSON):
-  ```json
-  {
-    "id": "int",
-    "group_id": "int",
-    "movie_id": "int",
-    "user_id": "int",
-    "rating": "int"
-  }
-  ```
+  - Response shape (JSON):
+    ```json
+    [
+      {
+        "id": int,
+        "title": "string",
+        "location": "string",
+        "image_url": "string",
+        "event_time_date": "2023-10-16T17:43:02.283000",
+        "description": "string",
+        "group_id": int,
+        "creator_id": int,
+        "status": "string"
+      }
+    ]
+    ```
+</details>
 
-### Update a Rating for a Movie in a Group
+<details><summary>Delete Event</summary>
 
-- Endpoint path: /groups/{group_id}/movies/{movie_id}/ratings/{rating_id}
-- Endpoint method: PUT
-- Headers:
-  - Authorization: Bearer token
-- Request shape (JSON):
-  ```json
-  {
-    "rating": "int"
-  }
-  ```
-- Response: Rating successfully updated
-- Response shape (JSON):
-  ```json
-  {
-    "id": "int",
-    "group_id": "int",
-    "movie_id": "int",
-    "user_id": "int",
-    "rating": "int"
-  }
-  ```
+  - Endpoint path: /events/{event_id}
+  - Endpoint method: DELETE
+  - Query parameters:
+    - event_id: needed to delete specific event
 
-### Get List of Ratings for a Movie in a Group
+  - Headers:
+    - Authorization: Bearer token
 
-- Endpoint path: /groups/{group_id}/movies/{movie_id}/ratings
-- Endpoint method: GET
-- Headers:
-  - Authorization: Bearer token
-- Response: List of all ratings for the movie in the specified group.
-- Response shape (JSON):
-  ```json
-  {
-      "ratings": [
-          {
-              "id": "int",
-              "group_id": "int",
-              "movie_id": "int",
-              "user_id": "int",
-              "rating": "int"
-          },
-          ...
-          ]
-  }
-  ```
+  - Response: Confirmation that selected event has been deleted
 
-### Get the Average Rating of a Movie in a Group
+  - Response shape (JSON):
+    ```json
+    true
+    ```
+</details>
 
-- Endpoint path: /groups/{group_id}/movies/{movie_id}/averageRating
-- Endpoint method: GET
-- Headers:
-- Authorization: Bearer token
-- Response shape (JSON):
-  ```json
-  {
-    "average_rating": "float"
-  }
-  ```
+## Event Attendees Endpoints
 
-<!-- WANT TO SEE -->
+<details><summary>Create Attendee</summary>
 
-### Add/remove user to/from the a “Want to See” list
+  - Endpoint path: /attendees
+  - Endpoint method: POST
 
-- Endpoint path: /groups/{group_id}/movies/{movie_id}/togglewantToSee
-- Endpoint method: POST
-- Headers:
-  - Authorization: Bearer token
-- Response: Successfully updated the "Want to See" list
-- Response shape (JSON):
-  ```json
-  {
-      "id": "int",
-      "movie_id": "int",
-      "group_id": "int",
-      "users_want_to_see": ["int", ...]
-  }
-  ```
+  - Headers:
+    - Authorization: Bearer token
+
+  - Request shape (JSON):
+    ```json
+    {
+      "user_id": int,
+      "event_id": int
+    }
+    ```
+  - Response: Returned JSON that has information for specific event with: event and user ids, and a default user event status that is "Not Seen"
+
+  - Response shape (JSON):
+    ```json
+    {
+      "id": int,
+      "status": "Not Seen",
+      "user_id": int,
+      "event_id": int
+    }
+    ```
+</details>
+
+<details><summary>Get Attendee List for Event</summary>
+
+  - Endpoint path: /events/{event_id}/attendees
+  - Endpoint method: GET
+  - Query parameters:
+    - event_id: needed to return a list of attendees for a specific event
+
+  - Headers:
+    - Authorization: Bearer token
+
+  - Response: Returned JSON that has a list of event attendents with the users name, ordered by their status, i.e. "going" vs "not going" vs "not seen"
+
+  - Response shape (JSON):
+    ```json
+    [
+      {
+        "id": int,
+        "status": "string",
+        "user_id": int,
+        "event_id": int,
+        "user_name": "string"
+      }, ...
+    ]
+    ```
+</details>
+
+<details><summary>Get All Attendees</summary>
+
+  - Endpoint path: /attendees
+  - Endpoint method: GET
+
+  - Headers:
+    - Authorization: Bearer token
+
+  - Response: Returned JSON that has a list of all event attendents
+
+  - Response shape (JSON):
+    ```json
+    [
+      {
+        "id": int,
+        "status": "string",
+        "user_id": int,
+        "event_id": int,
+        "user_name": "string"
+      }, ...
+    ]
+    ```
+</details>
+
+<details><summary>Update Attendee Status</summary>
+
+  - Endpoint path: /attendees/{attendee_id}
+  - Endpoint method: PUT
+  - Query parameters:
+    - attendee_id: needed to update a specific attendee's status
+
+  - Headers:
+    - Authorization: Bearer token
+
+  - Request shape (JSON):
+    ```json
+    {
+      "status": "Going/Not Going/Maybe"
+    }
+    ```
+  - Response: Updated event attendee detail with changed status information reflected
+
+  - Response shape (JSON):
+    ```json
+    {
+      "id": int,
+      "status": "string",
+      "user_id": int,
+      "event_id": int
+    }
+    ```
+  </details>
