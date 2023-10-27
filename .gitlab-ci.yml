@@ -40,7 +40,6 @@ build-api-image:
   only:
     - main
 
-
 # Build the React/JavaScript front-end
 build-front-end-job:
   stage: build
