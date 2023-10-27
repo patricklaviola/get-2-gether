@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import CreateEventModalForm from "./Components/Events_/CreateEventModalForm";
-import ViewEventDetailsModal from "./Components/Events_/ViewEventDetailsModal";
-import SideMenu from "./Components/Dashboard components/SideMenu";
-import AddGroupMemberForm from "./Components/Groups/AddGroupMemberForm";
+import CreateEventModalForm from "./Components/CreateEventModalForm";
+import ViewEventDetailsModal from "./Components/ViewEventDetailsModal";
+import SideMenu from "./Components/SideMenu";
+import AddGroupMemberForm from "./Components/AddGroupMemberForm";
 
 function GroupDashboard() {
   const C3POIcon = require("./icons/c3po.png");
@@ -23,7 +23,7 @@ function GroupDashboard() {
     setMessageDisplay(value);
   };
 
-  const handleMessage = async (event) => {
+  const handleMessage = async () => {
     const url = `${process.env.REACT_APP_API_HOST}/groups/${groupId.id}/messages`;
     const m = {
       message: messageDisplay,
@@ -38,8 +38,7 @@ function GroupDashboard() {
     };
     const response = await fetch(url, fetchConfig);
     if (response.ok) {
-      const finished = await response.json();
-      console.log(finished);
+      await response.json();
       fetchMessages();
     }
     setMessageDisplay("");
@@ -47,12 +46,10 @@ function GroupDashboard() {
 
   const handleGoingClick = async (id) => {
     const allAttendeeUrl = `${process.env.REACT_APP_API_HOST}/events/${id}/attendees`;
-    console.log(allAttendeeUrl);
     const response1 = await fetch(allAttendeeUrl, { credentials: "include" });
     let attendeeId = 0;
     if (response1.ok) {
       const data1 = await response1.json();
-      console.log(data1);
       for (let i = 0; i < data1.length; i++) {
         let currAttendee = data1[i];
         if (currAttendee.user_id === userInfo.id) {
@@ -75,8 +72,7 @@ function GroupDashboard() {
     };
     const response2 = await fetch(url, fetchConfig);
     if (response2.ok) {
-      const finished = await response2.json();
-      console.log(finished);
+      await response2.json();
     }
   };
   const handleMaybeClick = async (id) => {
@@ -85,7 +81,6 @@ function GroupDashboard() {
     let attendeeId = 0;
     if (response1.ok) {
       const data1 = await response1.json();
-      console.log(data1);
       for (let i = 0; i < data1.length; i++) {
         let currAttendee = data1[i];
         if (currAttendee.user_id === userInfo.id) {
@@ -108,8 +103,7 @@ function GroupDashboard() {
     };
     const response2 = await fetch(url, fetchConfig);
     if (response2.ok) {
-      const finished = await response2.json();
-      console.log(finished);
+      await response2.json();
     }
   };
   const handleNotGoingClick = async (id) => {
@@ -118,7 +112,6 @@ function GroupDashboard() {
     let attendeeId = 0;
     if (response1.ok) {
       const data1 = await response1.json();
-      console.log(data1);
       for (let i = 0; i < data1.length; i++) {
         let currAttendee = data1[i];
         if (currAttendee.user_id === userInfo.id) {
@@ -141,8 +134,7 @@ function GroupDashboard() {
     };
     const response2 = await fetch(url, fetchConfig);
     if (response2.ok) {
-      const finished = await response2.json();
-      console.log(finished);
+      await response2.json();
     }
   };
 
@@ -151,7 +143,6 @@ function GroupDashboard() {
     const response = await fetch(url, { credentials: "include" });
     if (response.ok) {
       const data = await response.json();
-      console.log("fetching messages");
       setMessages(data);
     }
   };
@@ -161,7 +152,6 @@ function GroupDashboard() {
     const response4 = await fetch(url4, { credentials: "include" });
     if (response4.ok) {
       const data4 = await response4.json();
-      console.log(data4);
       setToken(data4);
       setUserInfo(data4["account"]);
     }
@@ -184,7 +174,6 @@ function GroupDashboard() {
     const response2 = await fetch(url2, { credentials: "include" });
     if (response2.ok) {
       const data2 = await response2.json();
-      console.log(data2);
       setEvents(data2);
     }
     const response3 = await fetch(url3, { credentials: "include" });
@@ -239,12 +228,12 @@ function GroupDashboard() {
                     change={change}
                     setChange={setChange}
                   />
-                  {events.map((event, index) => {
+                  {events.map((event) => {
                     return (
                       <div key={event.id} className="col gy-5">
                         <div className="card" style={{ width: "18rem" }}>
                           <img
-                            src={event.image_url}
+                            src={event.image_url.length > 0 ? event.image_url : "/g2g.png"}
                             className="card-img-top"
                             alt="house"
                           />

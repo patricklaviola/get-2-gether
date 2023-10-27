@@ -1,6 +1,6 @@
 import React from "react";
 import "./Style.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -8,7 +8,7 @@ export default function SignUpForm() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { register } = useToken();
+  const { register, token } = useToken();
   const navigate = useNavigate();
 
   const handleRegistration = async (e) => {
@@ -24,10 +24,14 @@ export default function SignUpForm() {
       `${process.env.REACT_APP_API_HOST}/api/accounts`
     );
     e.target.reset();
-    setTimeout(() => {
-      navigate("/personal-dashboard");
-    }, 900);
+
   };
+  useEffect(() => {
+    if (token) {
+      navigate(`/personal-dashboard`);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token]);
 
   return (
     <div className="input-container">

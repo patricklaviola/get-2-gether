@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import ViewEventDetailsModal from "./Components/Events_/ViewEventDetailsModal";
-import SideMenu from "./Components/Dashboard components/SideMenu";
-import GroupForm from "./Components/Groups/GroupForm";
+import ViewEventDetailsModal from "./Components/ViewEventDetailsModal";
+import SideMenu from "./Components/SideMenu";
+import GroupForm from "./Components/GroupForm";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 
 function PersonalDashboard() {
@@ -70,8 +70,7 @@ function PersonalDashboard() {
     };
     const attendeeResponse = await fetch(attendeeUrl, fetchConfig);
     if (attendeeResponse.ok) {
-      const finished = await attendeeResponse.json();
-      console.log(finished);
+      await attendeeResponse.json();
     }
   };
 

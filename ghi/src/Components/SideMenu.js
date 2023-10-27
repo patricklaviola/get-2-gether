@@ -62,7 +62,6 @@ function SideMenu(props) {
           };
           const response4 = await fetch(deleteAttendeeUrl, fetch2Config);
           if (response4.ok) {
-            console.log("attendee deleted");
           }
         }
       }

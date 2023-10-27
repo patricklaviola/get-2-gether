@@ -1,13 +1,13 @@
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import LoginForm from "./Login_SignUp/LoginForm.js";
-import SignUpForm from "./Login_SignUp/SignUpForm";
+import LoginForm from "./LoginForm.js";
+import SignUpForm from "./SignUpForm";
 import GroupDashboard from "./GroupDashboard.js";
 import PersonalDashboard from "./PersonalDashboard";
 import React from "react";
 
 import Nav from "./Nav";
-import GroupForm from "./Components/Groups/GroupForm.js";
+import GroupForm from "./Components/GroupForm.js";
 import "./App.css";
 
 function App() {

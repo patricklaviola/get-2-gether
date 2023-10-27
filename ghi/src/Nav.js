@@ -1,14 +1,19 @@
 import useToken from "@galvanize-inc/jwtdown-for-react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 function Nav() {
   const { logout } = useToken();
   const navigate = useNavigate();
   const { token } = useToken();
 
-  function refreshPage() {
-    navigate("/login");
-  }
+
+  useEffect(() => {
+    if (!token) {
+      navigate(`/login`);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token]);
 
   if (token) {
     return (
@@ -21,7 +26,7 @@ function Nav() {
                   className="btn btn-link"
                   onClick={async () => {
                     await logout();
-                    refreshPage();
+                    navigate("/login");
                   }}
                 >
                   <NavLink

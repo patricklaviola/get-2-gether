@@ -85,7 +85,6 @@ function GroupForm() {
       };
 
       const createdGroup = await createGroup(groupData);
-      console.log("Created group:", createdGroup);
 
       if (createdGroup) {
         await createGroupMember(createdGroup);
