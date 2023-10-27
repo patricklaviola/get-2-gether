@@ -67,7 +67,7 @@ function AddGroupMemberForm(props) {
     <>
       <button
         type="button"
-        className="btn group_member"
+        className="btn groupForm"
         data-bs-toggle="modal"
         data-bs-target="#GroupModal"
       >
@@ -88,7 +88,7 @@ function AddGroupMemberForm(props) {
               </h5>
               <button
                 type="button"
-                className="btn-close"
+                className="btn-close btn-close-white"
                 data-bs-dismiss="modal"
                 aria-label="Close"
               ></button>
@@ -119,7 +119,7 @@ function AddGroupMemberForm(props) {
               <div className="modal-footer">
                 <button
                   type="submit"
-                  className="btn btn-primary"
+                  className="btn create-group-member"
                   data-bs-dismiss="modal"
                 >
                   Add to Group

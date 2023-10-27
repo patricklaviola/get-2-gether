@@ -1,7 +1,6 @@
 .input-container {
-  display: flex;
-  flex-direction: column;
-  margin: 6% auto;
+  margin: auto;
+  margin-top: 30%;
   width: 600px;
   background: #071952;
   padding-bottom: 30px;
@@ -33,7 +32,7 @@
   margin-top: 55px;
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 5px;
 }
 
 .input {
@@ -69,8 +68,10 @@ div svg {
 .submit-container {
   display: flex;
   gap: 30px;
-  margin: 60px 0px 60px 60px;
+  justify-content: center;
   color: #071952;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
 .submit {
@@ -88,6 +89,21 @@ div svg {
   cursor: pointer;
 }
 
+.submit-create {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 150px;
+  height: 50px;
+  color: #071952;
+  background: #97feed;
+  border-radius: 50px;
+  border-width: 0;
+  font-size: 19px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
 .submit:hover {
   background: #35a29f;
   color: #071952;
@@ -95,13 +111,13 @@ div svg {
   border-width: 0;
 }
 
-#login-button {
+#login-button-on-sign-up-page {
   text-decoration: #97feed underline;
   color: #071952;
   border-width: 0;
 }
 
-#login-button:hover {
+#login-button-on-sign-up-page:hover {
   text-decoration: #071952 underline;
   color: #071952;
   background: #35a29f;
@@ -119,9 +135,137 @@ div svg {
   background: #35a29f;
 }
 
-/************* Nav Bar CSS ************/
+.group_member_outer_button {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
 
-.submit-login {
+.bg {
+  background: #071952;
+}
+.groupForm {
+  align-items: right;
+  width: 200px;
+  height: 50px;
+  color: #97feed;
+  background: #071952;
+  border-radius: 50px;
+  font-size: 19px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.card-body {
+  max-width: auto;
+  height: auto;
+}
+
+.modal-body {
+  max-width: auto;
+  height: auto;
+}
+
+img {
+  object-fit: cover;
+  max-width: 28rem;
+}
+
+.card-link {
+  color: white;
+  background: #35a29f;
+  border-radius: 15px;
+  border: white;
+}
+
+.card {
+  background: #071952;
+  color: white;
+  border: 2px solid #071952;
+}
+
+.list-group-item {
+  background: #071952;
+  color: #97feed;
+  border: white;
+}
+
+.view-details {
+  color: white;
+  background: #35a29f;
+  border: #35a29f;
+}
+
+.modal-content {
+  background: #071952;
+}
+
+.attendee-div {
+  padding-bottom: 15px;
+}
+
+.modal-title {
+  color: white;
+}
+
+.modal-body {
+  background: #071952;
+  border: 5px solid #071952;
+}
+
+.offcanvas {
+  background: #071952;
+  color: #97feed;
+}
+
+.offcanvas-body {
+  color: #97feed;
+}
+
+.canvas-button {
+  color: #97feed;
+}
+
+.create-group-member {
+  align-items: right;
+  width: 200px;
+  height: 45px;
+  color: #071952;
+  background: #97feed;
+  border-radius: 50px;
+  font-size: 19px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+a {
+  color: white;
+  text-decoration: underline transparent;
+}
+
+.member {
+  color: white;
+}
+
+button svg {
+  background: #071952;
+  font-size: 600px;
+}
+
+.colorCorrect {
+  color: #071952;
+  border-top-width: 0px;
+  border-right-width: 0px;
+  border-bottom-width: 0px;
+  border-left-width: 0px;
+  padding-bottom: 0px;
+  padding-right: 0px;
+  padding-top: 0px;
+  padding-left: 0px;
+}
+
+.buttons-styling {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -135,33 +279,71 @@ div svg {
   cursor: pointer;
 }
 
-.submit-login:hover {
-  background: #35a29f;
+.buttons-styling:hover {
+  background: #97feed;
   color: #071952;
-  text-decoration: #071952 underline;
+  text-decoration: #97feed underline;
 }
 
-.group_member {
-  align-items: right;
+.menu-button {
+  margin-top: 0.5rem;
+  margin-left: 1.5rem;
+  align-items: left;
   width: 200px;
-  height: 60px;
+  height: 50px;
   color: #97feed;
   background: #071952;
   border-radius: 50px;
   font-size: 19px;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
 }
 
-.group_member_outer_button {
-    text-align: right;
+.dash-title {
+  font-size: 70px;
+  padding-top: 70px;
 }
 
-/* 
-******Font Family Picks******
-font-family: 'Croissant One', serif;
-font-family: 'Dosis', sans-serif;
-font-family: 'Indie Flower', cursive;
-font-family: 'Spectral', serif; 
+#create-group-button {
+  margin-left: auto;
+  margin-right: 0;
+}
 
-*/
+#chat-pane {
+  max-width: 38%;
+  background: #071952;
+  color: white;
+  border-radius: 20px;
+  padding-bottom: 15px;
+  margin-left: 25px;
+  .card,
+  .card-header {
+    background: #35a29f;
+    color: white;
+  }
+}
+
+.create-event-button {
+  align-items: right;
+  width: 200px;
+  height: 45px;
+  color: #071952;
+  background: #97feed;
+  border-radius: 50px;
+  font-size: 19px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.create-message {
+  align-items: right;
+  width: 200px;
+  height: 45px;
+  color: #97feed;
+  background: #071952;
+  border-radius: 50px;
+  border: solid 0 transparent;
+  font-size: 19px;
+  font-weight: 600;
+  cursor: pointer;
+}

@@ -6,20 +6,24 @@ function ViewEventDetailsModal(props) {
 
   const handleOpenModal = async (event, id) => {
     event.preventDefault();
-    setLoading(true);
-    const urlEventAttendees = `${process.env.REACT_APP_API_HOST}/events/${id}/attendees`;
-    const response = await fetch(urlEventAttendees, {
-      credentials: "include",
-    });
-    const data = await response.json();
-    setEventAttendees(data);
-    setLoading(false);
+    try {
+      setLoading(true);
+      const urlEventAttendees = `${process.env.REACT_APP_API_HOST}/events/${id}/attendees`;
+      const response = await fetch(urlEventAttendees, {
+        credentials: "include",
+      });
+      const data = await response.json();
+      setEventAttendees(data);
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
   };
   return (
     <>
       <button
         type="button"
-        className="btn btn-primary"
+        className="btn view-details"
         data-bs-toggle="modal"
         data-bs-target={`#eventModal${props.event.id}`}
         onClick={(event) => handleOpenModal(event, props.event.id)}
@@ -44,9 +48,16 @@ function ViewEventDetailsModal(props) {
                 ) : (
                   <>
                     {props.event && (
-                      <div>
-                        <div>
-                          <img src={props.event.image_url} alt="Event Img" />
+                      <div className="w-100">
+                        <div className="w-100 attendee-div">
+                          <img
+                            src={
+                              props.event.image_url.length > 0
+                                ? props.event.image_url
+                                : "/g2g.png"
+                            }
+                            alt="Event Img"
+                          />
                         </div>
                         <div>{props.event.title}</div>
                         <div>Location: {props.event.location}</div>
@@ -59,8 +70,11 @@ function ViewEventDetailsModal(props) {
                         <div>Description: {props.event.description}</div>
                       </div>
                     )}
-                    <div>
-                      <div>Who is going???</div>
+                    <div className="attendee-div">
+                      <hr />
+                      <div className="attendee-div">
+                        <h5><u>Who is going???</u></h5>
+                      </div>
                       {eventAttendees.map((eventAttendee) => {
                         return (
                           <div key={eventAttendee.id}>

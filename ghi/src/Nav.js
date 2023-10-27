@@ -18,12 +18,12 @@ function Nav() {
   if (token) {
     return (
       <>
-        <div className="nav justify-content-end mt-3">
+        <div className="nav dashboardNav position-absolute top-0 end-0">
           <span className="d-flex">
             <div className="btn-toolbar" role="toolbar">
               <div className="btn-group mb-3" role="group">
                 <button
-                  className="btn btn-link"
+                  className="btn"
                   onClick={async () => {
                     await logout();
                     navigate("/login");
@@ -31,16 +31,16 @@ function Nav() {
                 >
                   <NavLink
                     to="/login"
-                    className="submit-login submit-container"
+                    className="buttons-styling"
+                    id="navDesign-buttons"
                   >
                     Logout
-                    <i className="bi bi-box-arrow-left"></i>
                   </NavLink>
                 </button>
-                <button className="btn btn-link">
+                <button className="btn" id="navDesign-buttons">
                   <NavLink
                     to={`/personal-dashboard`}
-                    className="submit-login submit-container"
+                    className="buttons-styling"
                   >
                     Personal Dashboard
                   </NavLink>

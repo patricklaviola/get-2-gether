@@ -24,7 +24,6 @@ export default function SignUpForm() {
       `${process.env.REACT_APP_API_HOST}/api/accounts`
     );
     e.target.reset();
-
   };
   useEffect(() => {
     if (token) {
@@ -111,9 +110,12 @@ export default function SignUpForm() {
             />
           </div>
         </div>
-        <div className="submit-container">
+        <div className="submit-container mt-5">
           <Link to="/login">
-            <button id="login-button" className="btn btn-primary submit">
+            <button
+              id="login-button-on-sign-up-page"
+              className="btn submit"
+            >
               Login
             </button>
           </Link>

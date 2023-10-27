@@ -72,14 +72,14 @@ const LoginForm = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <div className="submit-container">
+          <div className="submit-container mt-4">
             <input
-              className="btn submit btn-primary"
+              className="btn submit"
               type="submit"
               value="Login"
             />
             <Link to="/signup">
-              <button id="signUp-button" className="btn btn-primary submit">
+              <button id="signUp-button" className="btn submit">
                 Sign Up
               </button>
             </Link>

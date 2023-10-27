@@ -103,57 +103,62 @@ function GroupForm() {
 
   return (
     <>
-      <button
-        type="button"
-        className="btn btn-primary"
-        data-bs-toggle="modal"
-        data-bs-target="#Modal"
-      >
-        Create New Group
-      </button>
-      <div
-        className="modal fade"
-        id="Modal"
-        tabIndex="-1"
-        aria-labelledby="ModalLabel"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title" id="ModalLabel">
-                Create Group
-              </h5>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <form onSubmit={handleSubmit} id="create-group-form">
-              <div className="modal-body">
-                <input
-                  value={group_name}
-                  onChange={handleChangeGroupName}
-                  placeholder="Group Name"
-                  required
-                  type="text"
-                  name="group_name"
-                  id="group_name"
-                  className="form-control"
-                />
-              </div>
-              <div className="modal-footer">
+      <div id="create-group-button">
+        <button
+          type="button"
+          className="btn groupForm"
+          data-bs-toggle="modal"
+          data-bs-target="#Modal"
+          
+        >
+          Create New Group
+        </button>
+      </div>
+      <div>
+        <div
+          className="modal fade"
+          id="Modal"
+          tabIndex="-1"
+          aria-labelledby="ModalLabel"
+          aria-hidden="true"
+        >
+          <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="ModalLabel">
+                  Create Group
+                </h5>
                 <button
-                  type="submit"
-                  className="btn btn-primary"
+                  type="button"
+                  className="btn-close btn-close-white"
                   data-bs-dismiss="modal"
-                >
-                  Create
-                </button>
+                  aria-label="Close"
+                ></button>
               </div>
-            </form>
+              <form onSubmit={handleSubmit} id="create-group-form">
+                <div className="modal-body">
+                  <input
+                    value={group_name}
+                    onChange={handleChangeGroupName}
+                    placeholder="Group Name"
+                    required
+                    type="text"
+                    name="group_name"
+                    id="group_name"
+                    className="form-control"
+                  />
+                </div>
+                <div className="modal-footer">
+                  <button
+                    type="submit"
+                    className="btn submit-create"
+                    data-bs-dismiss="modal"
+                  >
+                    Create
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>

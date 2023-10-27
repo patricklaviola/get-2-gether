@@ -11,42 +11,57 @@ function PersonalDashboard() {
   const { token } = useToken();
 
   async function getToken() {
-    const url = `${process.env.REACT_APP_API_HOST}/token`;
-    const response = await fetch(url, { credentials: "include" });
+    try {
+      const url = `${process.env.REACT_APP_API_HOST}/token`;
+      const response = await fetch(url, { credentials: "include" });
 
-    if (response.ok) {
+      if (!response.ok) {
+        throw new Error("Failed to fetch token");
+      }
       const data = await response.json();
       setToken(data["account"]);
+    } catch (error) {
+      console.error("Error fetching token:", error);
     }
   }
 
   const fetchData = async () => {
-    if (token1) {
-      const eventsUrl = `${process.env.REACT_APP_API_HOST}/users/${token1?.id}/events`;
-      const friendsUrl = `${process.env.REACT_APP_API_HOST}/users/${token1?.id}/friends`;
+    try {
+      if (token1) {
+        const eventsUrl = `${process.env.REACT_APP_API_HOST}/users/${token1?.id}/events`;
+        const friendsUrl = `${process.env.REACT_APP_API_HOST}/users/${token1?.id}/friends`;
 
-      const eventsResponse = await fetch(eventsUrl, { credentials: "include" });
-      if (eventsResponse.ok) {
+        const eventsResponse = await fetch(eventsUrl, {
+          credentials: "include",
+        });
+        const friendsResponse = await fetch(friendsUrl, {
+          credentials: "include",
+        });
+
+        if (!eventsResponse.ok || !friendsResponse.ok) {
+          throw new Error("Failed to fetch data");
+        }
         const eventsData = await eventsResponse.json();
         setEvents(eventsData);
-      }
-      const friendsResponse = await fetch(friendsUrl, {
-        credentials: "include",
-      });
-      if (friendsResponse.ok) {
         const friendsData = await friendsResponse.json();
         setFriends(friendsData);
       }
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
   };
 
   const handleClick = async (id, status) => {
-    const attendeesUrl = `${process.env.REACT_APP_API_HOST}/events/${id}/attendees`;
-    const attendeesResponse = await fetch(attendeesUrl, {
-      credentials: "include",
-    });
-    let attendeeId = 0;
-    if (attendeesResponse.ok) {
+    try {
+      const attendeesUrl = `${process.env.REACT_APP_API_HOST}/events/${id}/attendees`;
+      const attendeesResponse = await fetch(attendeesUrl, {
+        credentials: "include",
+      });
+      if (!attendeesResponse.ok) {
+        throw new Error("Failed to fetch attendees");
+      }
+
+      let attendeeId = 0;
       const attendeeData = await attendeesResponse.json();
       for (let i = 0; i < attendeeData.length; i++) {
         let currAttendee = attendeeData[i];
@@ -55,22 +70,29 @@ function PersonalDashboard() {
           break;
         }
       }
-    }
-    const attendeeUrl = `${process.env.REACT_APP_API_HOST}/attendees/${attendeeId}`;
-    let m = {
-      status,
-    };
-    const fetchConfig = {
-      method: "PUT",
-      body: JSON.stringify(m),
-      headers: {
-        "Content-type": "application/json",
-      },
-      credentials: "include",
-    };
-    const attendeeResponse = await fetch(attendeeUrl, fetchConfig);
-    if (attendeeResponse.ok) {
+
+      const attendeeUrl = `${process.env.REACT_APP_API_HOST}/attendees/${attendeeId}`;
+      let m = {
+        status,
+      };
+      const fetchConfig = {
+        method: "PUT",
+        body: JSON.stringify(m),
+        headers: {
+          "Content-type": "application/json",
+        },
+        credentials: "include",
+      };
+
+      const attendeeResponse = await fetch(attendeeUrl, fetchConfig);
+
+      if (!attendeeResponse.ok) {
+        throw new Error("Failed to update status");
+      }
+
       await attendeeResponse.json();
+    } catch (error) {
+      console.error("Error updating status:", error);
     }
   };
 
@@ -85,73 +107,87 @@ function PersonalDashboard() {
 
   return (
     <>
-      <SideMenu friends={friends} />
-      <h1>{token1?.user_name}'s Dashboard</h1>
       <div>
-        <div className="group_member_outer_button">
-          <GroupForm />
+        <div className="position-absolute top-0 start-0">
+          <SideMenu friends={friends} />
         </div>
-        <div className="container">
-          <div className="row">
-            <h1>Events</h1>
-            <div
-              data-bs-spy="scroll"
-              style={{ overflowY: "scroll", height: "750px" }}
-            >
+        <div>        
+          <p className="dash-title">{token1?.user_name}'s Dashboard</p>
+          <div className="group_member_outer_button"></div>
+          <div className="container">
+            <div className="row">
               <div className="col">
-                <div className="">
-                  <div className="row">
-                    {events.map((event) => {
-                      return (
-                        <div key={`e-${event.id}`} className="col gy-5">
-                          <div className="card" style={{ width: "18rem" }}>
-                            <img
-                              src={event.image_url}
-                              className="card-img-top"
-                              alt="Location"
-                            />
-                            <div className="card-body">
-                              <h5 className="card-title">{event.title}</h5>
-                              <p className="card-text">{event.description}</p>
-                            </div>
-                            <ul className="list-group list-group-flush">
-                              <li className="list-group-item">
-                                {event.time_date}
-                              </li>
-                              <li className="list-group-item">
-                                {event.location}
-                              </li>
-                            </ul>
-                            <div className="card-body">
-                              <button
-                                onClick={() => handleClick(event.id, "Going")}
-                                type="button"
-                                className="card-link"
-                              >
-                                Going
-                              </button>
-                              <button
-                                onClick={() => handleClick(event.id, "Maybe")}
-                                type="button"
-                                className="card-link"
-                              >
-                                Maybe
-                              </button>
-                              <button
-                                onClick={() =>
-                                  handleClick(event.id, "Not Going")
+                <div className="d-flex justify-content-between">
+                  <h1>Events</h1>
+                  <GroupForm />
+                </div>
+                <div
+                  className="row"
+                  data-bs-spy="scroll"
+                  style={{ overflowY: "auto", maxHeight: 825 }}
+                >
+                  <div className="">
+                    <div className="row">
+                      {events.map((event) => {
+                        return (
+                          <div key={`e-${event.id}`} className="col-4 gy-3">
+                            <div className="card" style={{ width: "18rem" }}>
+                              <img
+                                src={
+                                  event.image_url.length > 0
+                                    ? event.image_url
+                                    : "/g2g.png"
                                 }
-                                type="button"
-                                className="card-link"
-                              >
-                                Not Going
-                              </button>
+                                className="card-img-top"
+                                alt="Location"
+                              />
+                              <div className="card-body">
+                                <h5 className="card-title">{event.title}</h5>
+                                <p className="card-text">{event.description}</p>
+                              </div>
+                              <div>
+                                <ul className="list-group list-group-flush">
+                                  <li className="list-group-item">
+                                    {new Date(
+                                      event.event_time_date
+                                    ).toLocaleString()}
+                                  </li>
+                                  <li className="list-group-item">
+                                    {event.location}
+                                  </li>
+                                </ul>
+                              </div>
+                              <div className="card-body">
+                                <button
+                                  onClick={() => handleClick(event.id, "Going")}
+                                  type="button"
+                                  className="card-link"
+                                >
+                                  Going
+                                </button>
+                                <button
+                                  onClick={() => handleClick(event.id, "Maybe")}
+                                  type="button"
+                                  className="card-link"
+                                >
+                                  Maybe
+                                </button>
+                                <button
+                                  onClick={() =>
+                                    handleClick(event.id, "Not Going")
+                                  }
+                                  type="button"
+                                  className="card-link"
+                                >
+                                  Not Going
+                                </button>
+                              </div>
+                              <ViewEventDetailsModal event={event} />
                             </div>
-                            <ViewEventDetailsModal event={event} />
                           </div>
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
               </div>

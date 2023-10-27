@@ -52,7 +52,7 @@ function CreateEventModalForm(props) {
     <>
       <button
         type="button"
-        className="btn btn-primary"
+        className="btn buttons-styling"
         data-bs-toggle="modal"
         data-bs-target="#Modal"
       >
@@ -73,7 +73,7 @@ function CreateEventModalForm(props) {
               </h5>
               <button
                 type="button"
-                className="btn-close"
+                className="btn-close btn-close-white"
                 data-bs-dismiss="modal"
                 aria-label="Close"
               ></button>
@@ -162,7 +162,7 @@ function CreateEventModalForm(props) {
                 <div className="modal-footer">
                   <button
                     type="submit"
-                    className="btn btn-primary"
+                    className="btn btn-primary create-event-button"
                     data-bs-dismiss="modal"
                   >
                     Create
