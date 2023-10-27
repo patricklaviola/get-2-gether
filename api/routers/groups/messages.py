@@ -10,7 +10,9 @@ from queries.groups.messages import (
 )
 
 
-router = APIRouter()
+router = APIRouter(
+    tags=["Messages"]
+)
 
 
 @router.post(

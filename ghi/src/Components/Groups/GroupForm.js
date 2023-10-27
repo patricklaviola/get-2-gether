@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function GroupForm() {
-  const [group_name, setGroupName] = useState('');
+  const [group_name, setGroupName] = useState("");
   const navigate = useNavigate();
-  const [creatorId, setCreatorID] = useState('');
-  const [token, setToken] = useState('');
+  const [creatorId, setCreatorID] = useState("");
+  const [token, setToken] = useState("");
 
   async function getToken() {
     const url = `${process.env.REACT_APP_API_HOST}/token`;
-    const response = await fetch(url, { credentials: 'include' });
+    const response = await fetch(url, { credentials: "include" });
 
     if (response.ok) {
       const data = await response.json();
@@ -28,14 +28,14 @@ function GroupForm() {
   }, [token]);
 
   async function createGroup(data) {
-    const groupUrl = `${process.env.REACT_APP_API_HOST}/groups/`;
+    const groupUrl = `${process.env.REACT_APP_API_HOST}/groups`;
     const fetchConfig = {
-      method: 'post',
+      method: "post",
       body: JSON.stringify(data),
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-      credentials: 'include',
+      credentials: "include",
     };
 
     const response = await fetch(groupUrl, fetchConfig);
@@ -46,33 +46,33 @@ function GroupForm() {
       if (createdGroup && createdGroup.id) {
         return createdGroup;
       } else {
-        throw new Error('Group id not found');
+        throw new Error("Group id not found");
       }
     } else {
-      throw new Error('Failed to create new group');
+      throw new Error("Failed to create new group");
     }
   }
 
   async function createGroupMember(createdGroup) {
-    const groupMembersUrl = `${process.env.REACT_APP_API_HOST}/group_members/`;
+    const groupMembersUrl = `${process.env.REACT_APP_API_HOST}/group_members`;
     const data = {
       group_id: createdGroup.id,
       user_id: creatorId,
     };
 
     const fetchConfig = {
-      method: 'post',
+      method: "post",
       body: JSON.stringify(data),
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-      credentials: 'include',
+      credentials: "include",
     };
 
     const response = await fetch(groupMembersUrl, fetchConfig);
 
     if (!response.ok) {
-      console.error('Failed to create group member');
+      console.error("Failed to create group member");
     }
   }
 
@@ -85,12 +85,12 @@ function GroupForm() {
       };
 
       const createdGroup = await createGroup(groupData);
-      console.log('Created group:', createdGroup);
+      console.log("Created group:", createdGroup);
 
       if (createdGroup) {
         await createGroupMember(createdGroup);
-        setGroupName('');
-        navigate('/personal-dashboard');
+        setGroupName("");
+        navigate("/personal-dashboard");
       }
     } catch (error) {
       console.error(error);

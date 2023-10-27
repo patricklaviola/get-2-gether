@@ -10,7 +10,9 @@ from fastapi import APIRouter, Depends
 from authenticator import authenticator
 from typing import List, Union
 
-router = APIRouter()
+router = APIRouter(
+    tags=["Events"]
+)
 
 
 @router.post("/groups/{group_id}/events")

@@ -36,6 +36,7 @@ function CreateEventModalForm(props) {
         events: "",
       });
     }
+    props.setChange(!props.change);
   };
 
   const handleFormChange = (event) => {

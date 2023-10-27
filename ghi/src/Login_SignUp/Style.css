@@ -141,6 +141,22 @@ div svg {
   text-decoration: #071952 underline;
 }
 
+.group_member {
+  align-items: right;
+  width: 200px;
+  height: 60px;
+  color: #97feed;
+  background: #071952;
+  border-radius: 50px;
+  font-size: 19px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.group_member_outer_button {
+    text-align: right;
+}
+
 /* 
 ******Font Family Picks******
 font-family: 'Croissant One', serif;

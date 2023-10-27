@@ -161,3 +161,19 @@ class EventAttendeeRepository:
         except Exception as e:
             print(e)
             return {"message": "Unable to fetch attendees"}
+
+    def delete_event_attendee(self, user_id: int, event_id: int) -> bool:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        DELETE FROM event_attendees
+                        WHERE user_id=%s AND event_id = %s
+                        """,
+                        [user_id, event_id],
+                    )
+                    return True
+        except Exception as e:
+            print(e)
+            return False

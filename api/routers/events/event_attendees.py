@@ -11,7 +11,7 @@ from fastapi import APIRouter, Depends, Response
 from authenticator import authenticator
 from typing import List, Union
 
-router = APIRouter()
+router = APIRouter(tags=["EventAttendees"])
 
 
 @router.post(
@@ -71,3 +71,15 @@ def update_attendee_status(
     if result is None:
         response.status_code = 400
     return result
+
+
+@router.delete(
+    "/users/{user_id}/event/{event_id}/attendees", response_model=bool
+)
+def delete_event_attendee(
+    user_id: int,
+    event_id: int,
+    repo: EventAttendeeRepository = Depends(),
+    account_data: dict = Depends(authenticator.get_current_account_data),
+) -> bool:
+    return repo.delete_event_attendee(user_id, event_id)

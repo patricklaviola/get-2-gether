@@ -7,11 +7,12 @@ from queries.groups.group_members import (
     Error,
 )
 from fastapi import APIRouter, Depends
-
 from authenticator import authenticator
 from typing import List, Union
 
-router = APIRouter()
+router = APIRouter(
+    tags=["GroupMembers"]
+)
 
 
 @router.post("/group_members", response_model=GroupMemberOut)

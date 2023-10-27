@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
-function AddGroupMemberForm() {
+function AddGroupMemberForm(props) {
   const { id } = useParams();
-  const [user_id, setUserID] = useState('');
+  const [user_id, setUserID] = useState("");
   const [users, setUsers] = useState([]);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   async function getUsers() {
     const url = `${process.env.REACT_APP_API_HOST}/accounts`;
-    const response = await fetch(url, { credentials: 'include' });
+    const response = await fetch(url, { credentials: "include" });
 
     if (response.ok) {
       const data = await response.json();
@@ -29,32 +29,32 @@ function AddGroupMemberForm() {
       user_id: user_id,
     };
 
-    const groupMembersUrl = `${process.env.REACT_APP_API_HOST}/group_members/`;
+    const groupMembersUrl = `${process.env.REACT_APP_API_HOST}/group_members`;
     const fetchConfig = {
-      method: 'post',
+      method: "post",
       body: JSON.stringify(data),
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-      credentials: 'include',
+      credentials: "include",
     };
 
     try {
       const response = await fetch(groupMembersUrl, fetchConfig);
 
       if (response.ok) {
-        setUserID('');
-        setSuccessMessage('User added to the group successfully!');
-
-        setTimeout(() => setSuccessMessage(''), 5000);
+        setUserID("");
+        setSuccessMessage("User added to the group successfully!");
+        props.setChange(!props.change);
+        setTimeout(() => setSuccessMessage(""), 5000);
       } else {
         const responseText = await response.text();
         setErrorMessage(`Error: ${responseText}`);
       }
     } catch (error) {
-      setErrorMessage('Error: User is already in the group.');
-      setTimeout(() => setErrorMessage(''), 5000);
-      setUserID('');
+      setErrorMessage("Error: User is already in the group.");
+      setTimeout(() => setErrorMessage(""), 5000);
+      setUserID("");
     }
   }
 
@@ -67,7 +67,7 @@ function AddGroupMemberForm() {
     <>
       <button
         type="button"
-        className="btn btn-primary"
+        className="btn group_member"
         data-bs-toggle="modal"
         data-bs-target="#GroupModal"
       >
@@ -113,7 +113,9 @@ function AddGroupMemberForm() {
                 </select>
               </div>
               {errorMessage && <p className="text-danger">{errorMessage}</p>}
-              {successMessage && <p className="text-success">{successMessage}</p>}
+              {successMessage && (
+                <p className="text-success">{successMessage}</p>
+              )}
               <div className="modal-footer">
                 <button
                   type="submit"

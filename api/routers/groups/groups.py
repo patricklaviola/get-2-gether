@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends
 from authenticator import authenticator
 from typing import List, Union
 
-router = APIRouter()
+router = APIRouter(tags=["Groups"])
 
 
 @router.post("/groups")
@@ -16,7 +16,7 @@ def create_group(
     return repo.create(group, creator_id)
 
 
-@router.get("/groups/{group_id}/", response_model=GroupOut)
+@router.get("/groups/{group_id}", response_model=GroupOut)
 def get_group(
     group_id: int,
     repo: GroupRepository = Depends(),

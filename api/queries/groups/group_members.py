@@ -173,12 +173,34 @@ class GroupMemberRepository:
                 with conn.cursor() as db:
                     db.execute(
                         """
+                        SELECT group_id FROM group_members
+                        WHERE id = %s
+                        """,
+                        [id],
+                    )
+                    group_id = db.fetchone()[0]
+                    db.execute(
+                        """
+                        DELETE FROM event_attendees
+                        WHERE user_id IN (
+                            SELECT user_id FROM group_members WHERE id = %s
+                        )
+                        AND event_id IN (
+                            SELECT id FROM events WHERE group_id = %s
+                        )
+                        """,
+                        [id, group_id],
+                    )
+                    db.execute(
+                        """
                         DELETE FROM group_members
                         WHERE id = %s
                         """,
                         [id],
                     )
+
                     return True
+
         except Exception as e:
             print(e)
             return False
