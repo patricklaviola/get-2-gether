@@ -8,5 +8,6 @@
   },
   "terminal.integrated.env.windows": {
     "PYTHONPATH": "${workspaceFolder}/api"
-  }
+  },
+  "cSpell.words": ["refamiliarize"]
 }
