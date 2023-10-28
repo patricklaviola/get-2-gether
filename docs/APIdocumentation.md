@@ -20,7 +20,7 @@
       "access_token": "string",
       "token_type": "string",
       "account": {
-        "id": 0,
+        "id": int,
         "user_name": "string",
         "email": "string"
       }
@@ -220,9 +220,7 @@
   - Response shape (JSON):
 
   ```json
-    {
-      true
-    }
+  true
   ```
 </details>
 
@@ -505,7 +503,7 @@
       "title": "string",
       "location": "string",
       "image_url": "string",
-      "event_time_date": "2023-10-16T18:36:32.681Z",
+      "event_time_date": "YYYY-MM-DDTHH:MM:SS",
       "description": "string"
     }
     ```
@@ -519,7 +517,7 @@
       "title": "string",
       "location": "string",
       "image_url": "string",
-      "event_time_date": "2023-10-26T18:53:54.574000+00:00",
+      "event_time_date": "YYYY-MM-DDTHH:MM:SS",
       "description": "string",
       "group_id": int,
       "creator_id": int
@@ -543,7 +541,7 @@
       "title": "string",
       "location": "string",
       "image_url": "string",
-      "event_time_date": "2023-10-16T18:38:05.877Z",
+      "event_time_date": "YYYY-MM-DDTHH:MM:SS",
       "description": "string"
     }
     ```
@@ -556,7 +554,7 @@
       "title": "string",
       "location": "string",
       "image_url": "string",
-      "event_time_date": "2023-10-16T18:38:05.878Z",
+      "event_time_date": "YYYY-MM-DDTHH:MM:SS",
       "description": "string",
       "group_id": "int",
       "creator_id": "int"
@@ -583,7 +581,7 @@
       "title": "string",
       "location": "string",
       "image_url": "string",
-      "event_time_date": "2023-10-16T18:39:45.228Z",
+      "event_time_date": "YYYY-MM-DDTHH:MM:SS",
       "description": "string",
       "group_id": int,
       "creator_id": int
@@ -611,7 +609,7 @@
         "title": "string",
         "location": "string",
         "image_url": "string",
-        "event_time_date": "2023-10-16T17:43:02.283000",
+        "event_time_date": "YYYY-MM-DDTHH:MM:SS",
         "description": "string",
         "group_id": int,
         "creator_id": int
@@ -640,7 +638,7 @@
         "title": "string",
         "location": "string",
         "image_url": "string",
-        "event_time_date": "2023-10-16T17:43:02.283000",
+        "event_time_date": "YYYY-MM-DDTHH:MM:SS",
         "description": "string",
         "group_id": int,
         "creator_id": int,
