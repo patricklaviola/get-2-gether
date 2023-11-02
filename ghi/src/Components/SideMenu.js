@@ -228,6 +228,17 @@ function SideMenu(props) {
                     })}
                   </ul>
                 </div>
+                <hr className="dropdown-divider" />
+                <button
+                  className="btn canvas-button"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseMembers"
+                >
+                  <li>
+                    <Link to={`/chat`}>WebSocket Chat</Link>
+                  </li>
+                </button>
               </>
             )}
           </div>

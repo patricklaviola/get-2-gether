@@ -7,7 +7,6 @@ function Nav() {
   const navigate = useNavigate();
   const { token } = useToken();
 
-
   useEffect(() => {
     if (!token) {
       navigate(`/login`);
@@ -43,6 +42,11 @@ function Nav() {
                     className="buttons-styling"
                   >
                     Personal Dashboard
+                  </NavLink>
+                </button>
+                <button className="btn" id="navDesign-buttons">
+                  <NavLink to={`/chat`} className="buttons-styling">
+                    Chat
                   </NavLink>
                 </button>
               </div>

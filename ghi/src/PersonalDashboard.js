@@ -111,7 +111,7 @@ function PersonalDashboard() {
         <div className="position-absolute top-0 start-0">
           <SideMenu friends={friends} />
         </div>
-        <div>        
+        <div>
           <p className="dash-title">{token1?.user_name}'s Dashboard</p>
           <div className="group_member_outer_button"></div>
           <div className="container">

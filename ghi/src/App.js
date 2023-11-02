@@ -4,6 +4,7 @@ import LoginForm from "./LoginForm.js";
 import SignUpForm from "./SignUpForm";
 import GroupDashboard from "./GroupDashboard.js";
 import PersonalDashboard from "./PersonalDashboard";
+import Chat from "./Components/Chat.js";
 import React from "react";
 
 import Nav from "./Nav";
@@ -33,6 +34,7 @@ function App() {
               path="/groups/:id"
               element={<GroupDashboard />}
             ></Route>
+            <Route exact path="/chat" element={<Chat />}></Route>
           </Routes>
         </AuthProvider>
       </BrowserRouter>
