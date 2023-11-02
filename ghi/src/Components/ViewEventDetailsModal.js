@@ -54,7 +54,7 @@ function ViewEventDetailsModal(props) {
                             src={
                               props.event.image_url.length > 0
                                 ? props.event.image_url
-                                : "/g2g.png"
+                                : "https://media.tenor.com/lx2WSGRk8bcAAAAC/pulp-fiction-john-travolta.gif"
                             }
                             alt="Event Img"
                           />
@@ -73,7 +73,9 @@ function ViewEventDetailsModal(props) {
                     <div className="attendee-div">
                       <hr />
                       <div className="attendee-div">
-                        <h5><u>Who is going???</u></h5>
+                        <h5>
+                          <u>Who is going???</u>
+                        </h5>
                       </div>
                       {eventAttendees.map((eventAttendee) => {
                         return (

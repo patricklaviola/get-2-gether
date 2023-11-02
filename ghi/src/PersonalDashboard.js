@@ -111,7 +111,7 @@ function PersonalDashboard() {
         <div className="position-absolute top-0 start-0">
           <SideMenu friends={friends} />
         </div>
-        <div>        
+        <div>
           <p className="dash-title">{token1?.user_name}'s Dashboard</p>
           <div className="group_member_outer_button"></div>
           <div className="container">
@@ -136,7 +136,7 @@ function PersonalDashboard() {
                                 src={
                                   event.image_url.length > 0
                                     ? event.image_url
-                                    : "/g2g.png"
+                                    : "https://media.tenor.com/lx2WSGRk8bcAAAAC/pulp-fiction-john-travolta.gif"
                                 }
                                 className="card-img-top"
                                 alt="Location"

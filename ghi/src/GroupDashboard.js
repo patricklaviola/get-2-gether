@@ -278,7 +278,7 @@ function GroupDashboard() {
                             src={
                               event.image_url.length > 0
                                 ? event.image_url
-                                : "/g2g.png"
+                                : "https://media.tenor.com/lx2WSGRk8bcAAAAC/pulp-fiction-john-travolta.gif"
                             }
                             className="card-img-top"
                             alt="house"
